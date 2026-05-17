@@ -1,0 +1,7 @@
+[build]
+  command = "ng build --configuration production"
+  publish = "dist/frontend"
+
+# Desactivar cualquier plugin automático
+[[plugins]]
+package = "none"
