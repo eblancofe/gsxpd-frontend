@@ -1,0 +1,85 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        users-list.html
+    Descripción:    Plantilla HTML del listado de Usuarios del sistema GSXPD. Permite buscar, visualizar, paginar y
+                    gestionar los usuarios registrados, ofreciendo acciones de edición y eliminación para cada
+                    elemento.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al área de Gestión de Usuarios.
+      - Implementa un buscador enlazado mediante ngModel, filtrando los usuarios en tiempo real.
+      - Muestra una lista con los datos principales del usuario: username y email.
+      - Proporciona acciones de edición y eliminación por registro.
+      - Incorpora controles de paginación para navegar entre páginas de resultados.
+    ---------------------------------------------------------------
+-->
+<mat-card class="mat-elevation-z2"><!-- CONTENEDOR principal -->
+    <!-- BOTÓN VOLVER -->
+    <button mat-raised-button color="primary" routerLink="/gestion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Gestión
+    </button>
+    <!-- Título -->
+    <mat-card-title><strong>Listado de Usuarios del Sistema</strong></mat-card-title>
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BUSCADOR dinámico -->
+    <mat-form-field appearance="outline" class="buscador">
+        <mat-label>Buscar usuarios</mat-label>
+        <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre o email">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Inicio Tabla listado de usuarios -->
+    <table mat-table [dataSource]="dataSource" class="tabla-usuarios mat-elevation-z1">
+        <!-- USERNAME -->
+        <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Usuario </th>
+            <td mat-cell *matCellDef="let u"> {{ u.username }} </td>
+        </ng-container>
+        <!-- EMAIL -->
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Email </th>
+            <td mat-cell *matCellDef="let u"> {{ u.email }} </td>
+        </ng-container>
+        <!-- ACCIONES en tabla -->
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Acciones </th>
+            <td mat-cell *matCellDef="let u">
+                <button mat-icon-button color="primary" (click)="editUser(u)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" class="rojo" (click)="deleteUser(u.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <!-- Cabecera (Header) + Filas (Rows) -->
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+    </table>
+
+    <!-- PAGINACIÓN DEL BACKEND -->
+    <div class="paginacion">
+        <button mat-raised-button color="primary" (click)="prevPage()" [disabled]="page === 1">
+            <mat-icon>arrow_back</mat-icon>
+            Anterior
+        </button>
+        @if (lastPage > 0) {
+            <span class="pagina-info">Página {{ page }} de {{ lastPage }}</span><!-- paginación actual-->
+        }
+        <button mat-raised-button color="primary" (click)="nextPage()" [disabled]="page === lastPage">
+            Siguiente
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</mat-card><!-- Fin CONTENEDOR principal -->

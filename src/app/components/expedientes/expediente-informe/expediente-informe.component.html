@@ -1,0 +1,156 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        expediente-informe.component.html
+    Descripción:    Plantilla HTML del informe completo de un Expediente de Riesgos. Muestra de forma
+                    estructurada todos los datos asociados al expediente seleccionado, organizados por
+                    secciones temáticas (Actuación, Extracto, Cambio, FGC, IPA, Evaluador ASBO, Organización).
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al selector de expedientes.
+      - Utiliza *ngIf para mostrar el expediente cargado y su contenido estructurado.
+      - Presenta cada bloque de información agrupado por secciones temáticas, facilitando la lectura y análisis del informe.
+      - Incluye funciones auxiliares del componente TypeScript para obtener nombres descriptivos (cambio, evaluador, DG, titularidad, etc.).
+      - Ofrece opciones para imprimir o descargar el informe en PDF.
+    ---------------------------------------------------------------
+-->
+<!--
+<button type="button" (click)="volver_panel()">&larr; Volver a panel Informe</button>
+-->
+<mat-card class="mat-elevation-z2 informe-card">
+   <!-- BOTÓN VOLVER a configuración -->
+   <button mat-raised-button color="primary" routerLink="/informe" class="btn-volver no-print">
+      <mat-icon>arrow_back</mat-icon>
+      Volver al panel Informe
+   </button>
+
+   <mat-card-title>
+      <strong>INFORME completo del Expediente de Riesgos</strong>
+   </mat-card-title>
+
+   <mat-divider></mat-divider>
+   @if (expediente) {
+      @let exp = expediente;
+      <!-- JSON del expediente (debug) -->
+      <pre>{{ exp | json }}</pre>
+   
+      <div id="informe"><!-- PDF del Informe del Expediente -->
+         <mat-card-title>
+            <strong>Expediente de Riesgos - Nº: {{ exp.id }}</strong>
+         </mat-card-title>
+         <!-- ============================
+               SECCIÓN: ACTUACIÓN
+         ============================= -->
+         <mat-card class="seccion">
+            <mat-card-subtitle>Actuación del Expediente</mat-card-subtitle>
+            <mat-list>
+            <mat-list-item><strong>Actuación:</strong> {{ exp.nombre_Actuacion }}</mat-list-item>
+            <mat-list-item><strong>Subactuación:</strong> {{ exp.nombre_Subactuacion }}</mat-list-item>
+            <mat-list-item><strong>Actuación particular:</strong> {{ exp.nombre_Actuacion_Particular }}</mat-list-item>
+            </mat-list>
+         </mat-card>
+
+         <!-- ============================
+               SECCIÓN: EXTRACTO
+         ============================= -->
+         <mat-card class="seccion">
+            <mat-card-subtitle>Extracto del Expediente</mat-card-subtitle>
+            <mat-list>
+            <mat-list-item><strong>Extracto:</strong> {{ exp.nombre_Extracto }}</mat-list-item>
+            <mat-list-item><strong>Referencia:</strong> {{ exp.nombre_Extracto_Referencia }}</mat-list-item>
+            <mat-list-item><strong>Versión:</strong> {{ exp.nombre_Extracto_Version }}</mat-list-item>
+            <mat-list-item><strong>EEFF:</strong> {{ exp.nombre_Extracto_EEFF ? 'Sí' : 'No' }}</mat-list-item>
+            <mat-list-item><strong>Fecha:</strong> {{ exp.nombre_Extracto_Fecha | date:'dd/MM/yyyy' }}</mat-list-item>
+            <mat-list-item><strong>Archivo:</strong> {{ exp.nombre_Extracto_Archivo }}</mat-list-item>
+            </mat-list>
+         </mat-card>
+
+         <!-- ============================
+               SECCIÓN: CAMBIO
+         ============================= -->
+         <mat-card class="seccion">
+            <mat-card-subtitle>Tipo de Cambio del Expediente</mat-card-subtitle>
+            <mat-list>
+            <mat-list-item><strong>Título del cambio:</strong> {{ exp.nombre_Cambio_Titulo }}</mat-list-item>
+            <mat-list-item><strong>Tipo de cambio:</strong> {{ getNombreCambioTipo() }}</mat-list-item>
+            <mat-list-item><strong>Cambio significativo:</strong> {{ getNombreCambioSignificativo() }}</mat-list-item>
+            <mat-list-item><strong>Versión:</strong> {{ exp.nombre_Cambio_Version }}</mat-list-item>
+            <mat-list-item><strong>Fecha:</strong> {{ exp.nombre_Cambio_Fecha | date:'dd/MM/yyyy' }}</mat-list-item>
+            <mat-list-item><strong>Archivo:</strong> {{ exp.nombre_Cambio_Archivo }}</mat-list-item>
+            </mat-list>
+         </mat-card>
+
+         <!-- ============================
+               SECCIÓN: FGC
+         ============================= -->
+         <mat-card class="seccion">
+            <mat-card-subtitle>Sección de la Ficha de Gestión Compartida (FGC)</mat-card-subtitle>
+            <mat-list>
+            <mat-list-item><strong>FGC:</strong> {{ exp.nombre_FGC }}</mat-list-item>
+            <mat-list-item><strong>Versión:</strong> {{ exp.nombre_FGC_Version }}</mat-list-item>
+            <mat-list-item><strong>Fecha:</strong> {{ exp.nombre_FGC_Fecha | date:'dd/MM/yyyy' }}</mat-list-item>
+            <mat-list-item><strong>Archivo:</strong> {{ exp.nombre_FGC_Archivo }}</mat-list-item>
+            </mat-list>
+         </mat-card>
+
+         <!-- ============================
+               SECCIÓN: IPA
+         ============================= -->
+         <mat-card class="seccion">
+            <mat-card-subtitle>Sección del Informe de Pruebas y Aplicación (IPA)</mat-card-subtitle>
+            <mat-list>
+            <mat-list-item><strong>IPA:</strong> {{ exp.nombre_IPA }}</mat-list-item>
+            <mat-list-item><strong>Referencia:</strong> {{ exp.nombre_IPA_Referencia }}</mat-list-item>
+            <mat-list-item><strong>Versión:</strong> {{ exp.nombre_IPA_Version }}</mat-list-item>
+            <mat-list-item><strong>Fecha:</strong> {{ exp.nombre_IPA_Fecha | date:'dd/MM/yyyy' }}</mat-list-item>
+            <mat-list-item><strong>Archivo:</strong> {{ exp.nombre_IPA_Archivo }}</mat-list-item>
+            </mat-list>
+         </mat-card>
+
+         <!-- ============================
+               SECCIÓN: EVALUADOR ASBO
+         ============================= -->
+         <mat-card class="seccion">
+            <mat-card-subtitle>Evaluador de Seguridad (ASBO) del Expediente</mat-card-subtitle>
+            <mat-list>
+            <mat-list-item><strong>Evaluador:</strong> {{ getNombreEvaluadorASBO() }}</mat-list-item>
+            <mat-list-item><strong>Contrata:</strong> {{ exp.nombre_Evaluador_Contrata ? 'Sí' : 'No' }}</mat-list-item>
+            <mat-list-item><strong>Fecha prevista:</strong> {{ exp.nombre_Evaluador_Fecha_Prevista | date:'dd/MM/yyyy' }}</mat-list-item>
+            <mat-list-item><strong>Fecha ejecución:</strong> {{ exp.nombre_Evaluador_Fecha_Ejecucion | date:'dd/MM/yyyy' }}</mat-list-item>
+            <mat-list-item><strong>Versión:</strong> {{ exp.nombre_Evaluador_Version }}</mat-list-item>
+            <mat-list-item><strong>Archivo:</strong> {{ exp.nombre_Evaluador_Archivo }}</mat-list-item>
+            </mat-list>
+         </mat-card>
+
+         <!-- ============================
+               SECCIÓN: ORGANIZACIÓN
+         ============================= -->
+         <mat-card class="seccion">
+            <mat-card-subtitle>Sección de la Organización (UO) del Expediente</mat-card-subtitle>
+            <mat-list>
+            <mat-list-item><strong>Dirección General:</strong> {{ getNombreDG() }}</mat-list-item>
+            <mat-list-item><strong>Titularidad:</strong> {{ getNombreTitular() }}</mat-list-item>
+            </mat-list>
+         </mat-card>
+      </div>
+   }
+   <!-- BOTONES de acciones PDF -->
+   <div class="grid-config botones-pdf no-print">
+      <button mat-raised-button class="primary" (click)="imprimir()">
+         <mat-icon>print</mat-icon>
+         Imprimir / Guardar PDF
+      </button>
+
+      <button mat-raised-button class="primary" (click)="descargarPDF()">
+         <mat-icon>download</mat-icon>
+         Descargar PDF
+      </button>
+   </div>
+
+</mat-card><!-- Fin Tarjeta PANEL Informe Expediente -->

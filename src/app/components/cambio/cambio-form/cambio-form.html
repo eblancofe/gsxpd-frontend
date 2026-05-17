@@ -1,0 +1,42 @@
+<!--
+<button type="button" (click)="volver_panel()">&larr; Volver al panel</button>
+-->
+<mat-card class="mat-elevation-z2"><!-- Tarjeta PANEL EXPERTOS (EER) -->
+    <!-- BOTÓN VOLVER a configuración -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+
+    <mat-card-title><!-- TÍTULO -->
+        <strong>{{ editando ? 'Editar el tipo de Cambio' : 'Insertar Nuevo tipo de Cambio' }}</strong>
+    </mat-card-title>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- FORMULARIO EN VERTICAL -->
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="form-vertical">
+        <!-- Nombre del tipo de CAMBIO -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre del tipo de Cambio </mat-label>
+            <input matInput formControlName="nombre" />
+            @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+            <mat-error>El nombre del tipo de Cambio es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- BOTONES Guardar / Cancelar -->
+        <div class="grid-config">
+            <button mat-raised-button color="primary" [disabled]="form.pristine || form.invalid" type="submit">
+                <mat-icon>{{ editando ? 'save' : 'add' }}</mat-icon>
+                {{ editando ? 'Guardar cambios' : 'Crear un cambio' }}
+            </button>
+            <button mat-button type="button" (click)="volver()">
+                <mat-icon>close</mat-icon>
+                Cancelar
+            </button>
+        </div>
+
+    </form><!-- Fin de FORMULARIO EN VERTICAL -->
+
+</mat-card><!-- Fin Tarjeta PANEL de tipo de CAMBIO -->

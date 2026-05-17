@@ -1,0 +1,87 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        expertos-list.component.html
+    Descripción:    Plantilla HTML del listado de Expertos en Evaluación de Riesgos (EER). Permite buscar,
+                    visualizar, paginar y gestionar los expertos registrados, ofreciendo acciones de edición y
+                    eliminación para cada elemento.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al área de Configuración.
+      - Implementa un buscador enlazado mediante ngModel, filtrando los expertos en tiempo real.
+      - Muestra una tabla con los datos principales del experto: nombre y apellidos.
+      - Proporciona acciones de edición y eliminación por registro.
+      - Incorpora controles de paginación para navegar entre páginas de resultados.
+    ---------------------------------------------------------------
+-->
+<mat-card class="mat-elevation-z2"><!-- Tarjeta LISTADO PANEL EXPERTOS (EER) -->
+    <!-- BOTÓN VOLVER -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+    <!-- Título -->
+    <mat-card-title><strong>Listado de Experto en Evaluación de Riesgos (EER)</strong></mat-card-title>
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BUSCADOR dinámico -->
+    <mat-form-field appearance="outline" class="buscador">
+        <mat-label>Buscar Expertos</mat-label>
+        <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre o apellidos">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" class="tabla-usuarios mat-elevation-z1"><!-- Inicio Tabla Expertos (EER)-->
+
+        <!-- Nombre (EER) -->
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Nombre del Experto (EER)</th>        
+            <td mat-cell *matCellDef="let u"> {{ u.nombre_EER }} </td>
+        </ng-container>
+
+        <!-- Apellidos (EER) -->
+        <ng-container matColumnDef="apellidos">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Apellidos del Experto (EER) </th>
+            <td mat-cell *matCellDef="let u"> {{ u.apellidos_EER }} </td>
+        </ng-container>
+
+        <!-- ACCIONES en tabla -->
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Acciones </th>
+            <td mat-cell *matCellDef="let u">
+                <button mat-icon-button color="primary" (click)="editExperto(u)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" class="rojo" (click)="deleteExperto(u.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <!-- Cabecera (Header) + Filas (Rows) -->
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>      
+
+    </table><!-- Fin Tabla Expertos (EER)-->
+
+    <!-- PAGINACIÓN DEL BACKEND -->
+    <div class="paginacion">
+        <!-- Botón Anterior <= -->
+        <button mat-raised-button color="primary" (click)="prevPage()" [disabled]="page === 1">
+            <mat-icon>arrow_back</mat-icon>
+            Anterior
+        </button>
+        <span class="pagina-info">Página {{ page }} de {{ lastPage }}</span><!-- Info de página actual -->
+        <!-- Botón Siguiente => -->
+        <button mat-raised-button color="primary" (click)="nextPage()" [disabled]="page === lastPage">
+            Siguiente
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</mat-card><!-- Fin Tarjeta LISTADO PANEL EXPERTOS (EER) -->

@@ -1,0 +1,117 @@
+/*
+.tabla-cuadricula {
+    width: 100%;
+}
+
+.tabla-cuadricula thead th {
+    background-color: gray;
+    font-weight: bold;
+    text-align: center;
+}
+*/
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+html2pdf__container .no-print {
+    display: none !important;
+}
+
+/* Ocultar elementos marcados como no imprimibles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Imprimir SOLO el contenido del informe */
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    #informe,
+    #informe * {
+        visibility: visible !important;
+    }
+
+    #informe {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
+mat-card {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn-volver {
+    align-self: flex-start;
+}
+
+.select-compact {
+    width: 50%; //evita que ocupe todo el ancho
+}
+
+.tabla-material {
+    width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 3%;
+}
+
+.botones-pdf {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-volver {
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    width: fit-content;
+}
+
+.btn-volver mat-icon {
+    font-size: 20px;
+}
+
+/* === BOTONES DE OPCIONES === */
+.grid-config button {
+    background: var(--mat-sys-on-primary-fixed-variant) !important;
+    /* tu azul original */
+    color: white !important;
+    border: none;
+    padding: 20px;
+    font-size: 16px;
+    //border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+    text-transform: none;
+    /* evita mayúsculas Material */
+}
+
+.grid-config button:hover {
+    background: #1e4ea8 !important;
+    /* hover original */
+    transform: translateY(-3px);
+}
+
+/* === BOTÓN ACTIVO (cuando estás en esa ruta) === */
+.grid-config button.active-link {
+    background: #1e4ea8 !important;
+    border: 2px solid #4caf50;
+    /* borde verde original */
+}

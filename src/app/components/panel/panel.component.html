@@ -1,0 +1,102 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        panel.component.html
+    Descripción:    Plantilla HTML del Panel de Usuario del sistema GSXPD. Muestra información del usuario autenticado,
+                    sus permisos y las opciones disponibles según su rol (admin, secretaria, eer, lectura). Actúa como
+                    punto de entrada a las distintas áreas del sistema.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Muestra información del usuario autenticado (username y rol).
+      - Presenta una descripción general del área privada del sistema.
+      - Renderiza dinámicamente las opciones disponibles según el rol:
+          * admin: gestión de usuarios, configuración, expedientes e informes.
+          * secretaria: expedientes e informes.
+          * eer: configuración y gestión/creación de expedientes.
+          * lectura: acceso a informes.
+      - Utiliza un array dinámico (opcionesVisibles) para mostrar los botones de navegación correspondientes a cada rol.
+      - Incluye un botón de cierre de sesión accesible desde la cabecera.
+    ---------------------------------------------------------------
+-->
+<div class="panel-container"><!-- CONTENEDOR principal -->
+    <!-- CABECERA + Cierre de sesión-->
+    <mat-toolbar color="primary" class="mat-elevation-z2 toolbar">
+        <span class="titulo-panel">Panel de usuario</span>
+        <span class="spacer"></span><!-- Espaciador -->
+        <button mat-raised-button color="warn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Cerrar sesión
+        </button>
+    </mat-toolbar>
+
+    <!-- TARJETA DE INFORMACIÓN DEL USUARIO -->
+    <mat-card class="info-card">
+        <mat-card-title>Información del usuario</mat-card-title>
+        <mat-card-content>
+            <p><strong>Usuario:</strong> {{ username }}</p>
+            <p><strong>Rol:</strong> {{ role }}</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- Tarjeta DESCRIPCIÓN de la ficha del menú seleccionado -->
+    <mat-card class="descripcion-card">
+        <mat-card-title>Zona privada</mat-card-title>
+        <mat-card-content>
+            <p>Bienvenido al panel de control. Aquí podrás gestionar las distintas secciones según tu rol asignado.</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- Tarjeta Opciones disponibles según rol asignado -->
+    <mat-card class="opciones-card">
+        <mat-card-title>Opciones disponibles</mat-card-title>
+        <mat-card-content>
+            @if (role === 'admin') {
+                <p>Gestión de usuarios</p>
+                <p>Administración / Configuración del sistema de Expedientes</p>
+                <p>Gestión de Expedientes de riesgos</p>
+                <p>Panel de informes de Expedientes</p>
+            }
+            @else if (role === 'secretaria') {
+            <mat-list>
+                <p>Gestión de Expedientes de riesgos</p>
+                <p>Panel de informes de Expedientes</p>
+            </mat-list>
+            }
+            @else if (role === 'eer') {
+            <mat-list>
+                <p>Administración / Configuración del sistema de Expedientes</p>
+                <p>Gestión y Creación de Expedientes de Riesgos Operativos</p>
+            </mat-list>
+            }
+            @else if (role === 'lectura') {
+            <mat-list>
+                <p>Panel de informes de Expedientes</p>
+            </mat-list>
+            }
+            @else {
+                <p>No tienes opciones disponibles.</p>
+            }
+        </mat-card-content>
+    </mat-card><!-- Fin Tarjeta Opciones disponibles según rol asignado -->
+
+    <!-- BOTONES DE NAVEGACIÓN -->
+    <div class="grid-config">
+        @for (op of opcionesVisibles; track op.id) {
+            <button mat-raised-button color="primary" [routerLink]="op.ruta">
+                <mat-icon>{{ op.icon }}</mat-icon>
+                {{ op.texto }}
+            </button>
+        }
+    </div>
+
+</div><!-- Fin de CONTENEDOR principal -->

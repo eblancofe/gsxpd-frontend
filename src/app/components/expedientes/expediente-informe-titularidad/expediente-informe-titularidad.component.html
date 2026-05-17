@@ -1,0 +1,107 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        expediente-informe-titularidad.component.html
+    Descripción:    Plantilla HTML del informe de Expedientes según su Titularidad. Permite seleccionar una
+                    titularidad, filtrar los expedientes asociados y mostrar la información en formato tabular, con
+                    opciones para imprimir o descargar el informe.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al panel principal.
+      - Permite seleccionar la titularidad mediante un desplegable enlazado con ngModel, actualizando los resultados al cambiar
+        la selección.
+      - Muestra una tabla con los expedientes filtrados, incluyendo información clave: actuación, subactuación, actuación
+        particular, fecha e identificación de titularidad.
+      - Utiliza funciones auxiliares del componente TypeScript para obtener nombres descriptivos de la titularidad.
+      - Incluye controles para imprimir o descargar el informe en PDF.
+      - Muestra mensajes de estado cuando no existen datos o cuando los informes están en proceso de carga.
+    ---------------------------------------------------------------
+-->
+<!--
+<button type="button" (click)="volver_panel()">&larr; Volver al panel Informe</button>
+-->
+<mat-card class="mat-elevation-z2"><!-- Tarjeta PANEL seleccionar Expediente por TITULARIDAD -->
+    <!-- BOTÓN VOLVER a configuración -->
+    <button mat-raised-button color="primary" routerLink="/informe" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al panel Informe
+    </button>
+
+    <mat-card-title>
+        <strong class="no-print">Informes de Expediente por Titularidad: {{ getNombreTitularPorId(titularSeleccionado) }}</strong>
+    </mat-card-title>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- SELECT TITULARIDAD -->
+    <mat-form-field appearance="outline" class="select-compact">
+        <mat-label>Nombre de la Titularidad de la línea:</mat-label>
+        <mat-select [(ngModel)]="titularSeleccionado" (ngModelChange)="filtrarPorTitularidad()">
+            @for (t of titulares; track t.id) {
+            <mat-option [value]="t.id">{{ t.nombre_Titularidad }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+    
+    <!-- TABLA DE INFORMES -->
+    <div id="informe">
+        @if (expedientes.length > 0) {
+        <table mat-table [dataSource]="expedientes" class="mat-elevation-z1 tabla-material">
+            <!-- Actuación -->
+            <ng-container matColumnDef="actuacion">
+                <th mat-header-cell *matHeaderCellDef>Actuación</th>
+                <td mat-cell *matCellDef="let exp">{{ exp.nombre_Actuacion }}</td>
+            </ng-container>
+            <!-- Subactuación -->
+            <ng-container matColumnDef="subactuacion">
+                <th mat-header-cell *matHeaderCellDef>Subactuación</th>
+                <td mat-cell *matCellDef="let exp">{{ exp.nombre_Subactuacion }}</td>
+            </ng-container>
+            <!-- Actuación particular -->
+            <ng-container matColumnDef="ap">
+                <th mat-header-cell *matHeaderCellDef>Actuación particular</th>
+                <td mat-cell *matCellDef="let exp">{{ exp.nombre_Actuacion_Particular }}</td>
+            </ng-container>
+            <!-- Fecha -->
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                <td mat-cell *matCellDef="let exp">{{ exp.nombre_IPA_Fecha | date:'dd/MM/yyyy' }}</td>
+            </ng-container>
+            <!-- Titularidad -->
+            <ng-container matColumnDef="titularidad">
+                <th mat-header-cell *matHeaderCellDef>Titularidad</th>
+                <td mat-cell *matCellDef="let exp">{{ getNombreTitular(exp) }}</td>
+            </ng-container>
+            <!-- Filas -->
+            <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+        </table>
+        <!-- BOTONES PDF -->
+        <div class="grid-config no-print botones-pdf">
+            <button mat-raised-button color="primary" (click)="imprimir()">
+                <mat-icon>print</mat-icon>
+                Imprimir / Guardar PDF
+            </button>
+            <button mat-raised-button color="primary" (click)="descargarPDF()">
+                <mat-icon>download</mat-icon>
+                Descargar PDF
+            </button>
+        </div>
+        }
+    </div><!-- de capa informe -->
+
+    <!-- MENSAJES -->
+    @if (expedientes.length === 0 && !cargando) {
+        <div>No hay informes con ese nombre de Titularidad de la línea.</div>
+    }
+    @if (cargando) { <div>Cargando informes...</div> }
+
+</mat-card><!-- Fin Tarjeta PANEL Seleccionar Expediente por TITULARIDAD -->

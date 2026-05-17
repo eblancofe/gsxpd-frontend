@@ -1,0 +1,74 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        cambio-list.html
+    Descripción:    Plantilla HTML del área de Configuración del sistema. Proporciona acceso a las distintas
+                    secciones administrativas del GSXPD, mostrando información del usuario autenticado y enlaces
+                    directos a los paneles de gestión.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al panel principal.
+      - Muestra información del usuario autenticado (nombre y rol).
+      - Ofrece accesos directos a los módulos de administración: tipos de cambio.
+      - Contiene botones con routerLink para navegar entre las distintas áreas del sistema.
+      - Incluye un botón de cierre de sesión.
+    ---------------------------------------------------------------
+-->
+<mat-card class="mat-elevation-z2"><!-- CONTENEDOR principal -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver"><!-- BOTÓN VOLVER -->
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+    <!-- Título -->
+    <mat-card-title><strong>Listado del tipo de Cambio</strong></mat-card-title>
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BUSCADOR dinámico -->
+    <mat-form-field appearance="outline" class="buscador">
+        <mat-label>Buscar el tipo de Cambio</mat-label>
+        <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre del tipo de Cambio">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Tabla listado del tipo de Cambio -->
+    <table mat-table [dataSource]="dataSource" class="tabla-usuarios mat-elevation-z1">
+        <ng-container matColumnDef="nombre"><!-- campo nombre del tipo de cambio -->
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Nombre del tipo de Cambio </th>
+            <td mat-cell *matCellDef="let u"> {{ u.nombre_Cambio }} </td>
+        </ng-container>
+        <!-- ACCIONES tabla -->
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Acciones </th>
+            <td mat-cell *matCellDef="let u">
+                <button mat-icon-button color="primary" (click)="editCambio(u)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" class="rojo" (click)="deleteCambio(u.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <!-- Cabecera (Header) + Filas (Rows) -->
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+    </table><!-- Fin Tabla listado del tipo de Cambio -->
+
+    <div class="paginacion"><!-- PAGINACIÓN DEL BACKEND -->
+        <button mat-raised-button color="primary" (click)="prevPage()" [disabled]="page === 1">
+            <mat-icon>arrow_back</mat-icon>
+            Anterior
+        </button>
+        <span class="pagina-info">Página {{ page }} de {{ lastPage }}</span><!-- paginador actual -->
+        <button mat-raised-button color="primary" (click)="nextPage()" [disabled]="page === lastPage">
+            Siguiente
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</mat-card><!-- Fin CONTENEDOR principal -->

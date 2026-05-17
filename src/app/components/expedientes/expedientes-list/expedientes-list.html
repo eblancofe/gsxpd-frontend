@@ -1,0 +1,96 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        expedientes-list.component.html
+    Descripción:    Plantilla HTML del listado de Expedientes de Riesgos Operativos. Permite buscar, visualizar,
+                    paginar y gestionar los expedientes existentes, ofreciendo acciones de edición y eliminación para
+                    cada registro.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al área de Configuración.
+      - Implementa un buscador enlazado mediante ngModel, filtrando los expedientes en tiempo real.
+      - Muestra una tabla con información clave del expediente: Actuación Global (AG), Subactuación Global (SAG) y Actuación Particular (AP).
+      - Proporciona acciones de edición y eliminación por registro.
+      - Incorpora controles de paginación para navegar entre páginas de resultados.
+    ---------------------------------------------------------------
+-->
+<mat-card class="mat-elevation-z2"><!-- CONTENEDOR principal -->
+    <!-- BOTÓN VOLVER -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+    <!-- Título -->
+    <mat-card-title><strong>Buscador de Expedientes de riesgos operativos</strong></mat-card-title>
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BUSCADOR dnámico -->
+    <mat-form-field appearance="outline" class="buscador">
+        <mat-label>Buscador de Expedientes de riesgos operativos</mat-label>
+        <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre de Expedientes">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Tabla listado Expedientes -->
+    <table mat-table [dataSource]="dataSource" class="tabla-usuarios mat-elevation-z1">
+        <!-- campo nombre de la actuación del Expediente -->
+        <ng-container matColumnDef="nombre_actuacion">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Nombre de la Actuación (AG) </th>
+            <td mat-cell *matCellDef="let u"> {{ u.nombre_Actuacion }} </td>
+        </ng-container>
+        <!-- campo nombre de la sub-actuación del Expediente -->
+        <ng-container matColumnDef="nombre_subactuacion">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Nombre de la Sub-Actuación (SAG) </th>
+            <td mat-cell *matCellDef="let u"> {{ u.nombre_Subactuacion }} </td>
+        </ng-container>
+        <!-- campo nombre de Actuación Particular (AP) del Expediente -->
+        <ng-container matColumnDef="nombre_actuacion_particular">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Nombre de la Actuación Particular (AP) </th>
+            <td mat-cell *matCellDef="let u"> {{ u.nombre_Actuacion_Particular }} </td>
+        </ng-container>
+
+        <!-- ACCIONES tabla -->
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Acciones </th>
+            <td mat-cell *matCellDef="let u">
+                <button mat-icon-button color="primary" (click)="editExpedientes(u)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <!--
+                <button mat-icon-button color="warn" class="rojo" (click)="deleteExpedientes(u.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                -->
+                @if (userRole !== 'secretaria') {
+                <button mat-icon-button color="warn" class="rojo" (click)="deleteExpedientes(u.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                }
+            </td>
+        </ng-container>
+        <!-- Cabecera (Header) + Filas (Rows) -->
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+    </table><!-- Fin Tabla listado Expedientes -->
+
+    <!-- PAGINACIÓN DEL BACKEND -->
+    <div class="paginacion">
+        <button mat-raised-button color="primary" (click)="prevPage()" [disabled]="page === 1">
+            <mat-icon>arrow_back</mat-icon>
+            Anterior
+        </button>
+        <span class="pagina-info">Página {{ page }} de {{ lastPage }}</span><!-- paginador actual -->
+        <button mat-raised-button color="primary" (click)="nextPage()" [disabled]="page === lastPage">
+            Siguiente
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</mat-card><!-- Fin CONTENEDOR principal -->

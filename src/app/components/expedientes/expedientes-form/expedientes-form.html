@@ -1,0 +1,458 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        expedientes-form.component.html
+    Descripción:    Plantilla HTML del formulario para la creación y edición de Expedientes de Riesgos. Organiza la
+                    información en bloques temáticos (EER, Unidad Organizativa, Titularidad, Definición del Sistema,
+                    Significatividad, FGC, IPA y Evaluador AsBo), utilizando Reactive Forms con validaciones, selectores dinámicos y carga de archivos.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al área de Configuración.
+      - Implementa Reactive Forms con validaciones por campo y mensajes de error contextuales.
+      - Permite filtrar expertos (EER) mediante un campo de búsqueda y seleccionar múltiples valores.
+      - Utiliza selectores dinámicos para Unidad Organizativa, Titularidad, Tipo de Cambio, Significatividad y Evaluador AsBo.
+      - Organiza el formulario en bloques temáticos:
+          * Bloque 1: Datos generales del expediente.
+          * Bloque 2: Extracto / Definición del Sistema (DS).
+          * Bloque 3: Significatividad del cambio.
+          * Bloque 4: Ficha de Gestión Compartida (FGC).
+          * Bloque 5: Informe Pruebas Aplicación (IPA).
+          * Bloque 6: Evaluador de Seguridad (AsBo).
+      - Incluye campos de fecha, checkboxes y carga de archivos.
+      - Presenta botones de acción para guardar o cancelar la operación.
+    ---------------------------------------------------------------
+-->
+<!--
+<button type="button" (click)="volver_panel()">&larr; Volver al panel</button>
+-->
+<mat-card class="mat-elevation-z2"><!-- Tarjeta PANEL EXPERTOS (EER) -->
+    <!-- BOTÓN VOLVER a configuración -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+
+    <mat-card-title><!-- TÍTULO -->
+        <strong>{{ editando ? 'Editar Expediente de Riesgos' : 'Crear Nuevo Expediente de Riesgos' }}</strong>
+    </mat-card-title>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- FORMULARIO EN VERTICAL -->
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="form-vertical">
+        <!-- BLOQUE 1 - DATOS GENERALES -->
+        <!-- Buscar EXPERTO (EER) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Buscar experto (EER)</mat-label>
+            <input matInput placeholder="Buscar..." (input)="filtrarExpertos($event)">
+        </mat-form-field>
+
+        <!-- Seleccionar EXPERTO (EER) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Seleccione Experto (EER)</mat-label>
+            <mat-select formControlName="expedienteNombreEER" multiple>
+                @for (p of expertosFiltrados; track p.id) {
+                <mat-option [value]="p.id">
+                    {{ p.nombre_EER }} {{ p.apellidos_EER }}
+                </mat-option>
+                }
+            </mat-select>
+            @if (form.get('expedienteNombreEER')?.invalid && form.get('expedienteNombreEER')?.touched) {
+                <mat-error>El nombre del EER es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- seleccionar Unidad Organizativa -->
+        <mat-form-field appearance="outline">
+            <mat-label>Unidad Organizativa</mat-label>
+            <mat-select formControlName="expedienteNombreDG">
+                <mat-option value="">Seleccione Unidad Organizativa</mat-option>
+                @for (p of unidadorganizativa; track p.id) {
+                <mat-option [value]="p.id">{{ p.nombre_UnidadOrganizativa }}</mat-option>
+                }
+            </mat-select>
+            @if (form.get('expedienteNombreDG')?.invalid && form.get('expedienteNombreDG')?.touched) {
+                <mat-error>La Unidad Organizativa es obligatoria</mat-error>
+            }
+        </mat-form-field>
+    
+        <!-- seleccionar Titularidad -->
+        <mat-form-field appearance="outline">
+            <mat-label>Titularidad (RFIG)</mat-label>
+            <mat-select formControlName="expedienteNombreTitular">
+                <mat-option value="">Seleccione Titularidad</mat-option>
+                @for (t of titularidad; track t.id) {
+                <mat-option [value]="t.id">{{ t.nombre_Titularidad }}</mat-option>
+                }
+            </mat-select>
+            @if (form.get('expedienteNombreTitular')?.invalid && form.get('expedienteNombreTitular')?.touched) {
+                <mat-error>La Titularidad es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- insertar Actuación Global (AG) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre de la Actuación Global (AG)</mat-label>
+            <input matInput formControlName="expedienteNombreActuacion">
+            @if (form.get('expedienteNombreActuacion')?.invalid && form.get('expedienteNombreActuacion')?.touched) {
+                <mat-error>El nombre de la (AG) es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- insertar Subactuación Global (SAG) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre de la Subactuación Global (SAG)</mat-label>
+            <input matInput formControlName="expedienteNombreSubactuacion">
+            @if (form.get('expedienteNombreSubactuacion')?.invalid && form.get('expedienteNombreSubactuacion')?.touched) {
+            <mat-error>El nombre de la (SAG) es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- insertar Actuación Particular (AP) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre de la Actuación Particular (AP)</mat-label>
+            <input matInput formControlName="expedienteNombreActuacionParticular">
+            @if (form.get('expedienteNombreActuacionParticular')?.invalid &&
+            form.get('expedienteNombreActuacionParticular')?.touched) {
+            <mat-error>El nombre de la (AP) es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- insertar ruta Carpeta del Expediente -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre de la carpeta del Expediente</mat-label>
+            <input matInput formControlName="expedienteNombreCarpeta">
+            @if (form.get('expedienteNombreCarpeta')?.invalid && form.get('expedienteNombreCarpeta')?.touched) {
+            <mat-error>El nombre de la carpeta es obligatorio</mat-error>
+            }
+        </mat-form-field>
+        
+        <mat-divider></mat-divider>
+        <!-- BLOQUE 2 - DEFINICIÓN DEL SISTEMA (DS) -->
+        
+        <!-- Nombre del Extracto/Definición del sistema (DS) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre del Extracto / DS</mat-label>
+            <input matInput formControlName="expedienteNombreExtracto">
+            @if (form.get('expedienteNombreExtracto')?.invalid && form.get('expedienteNombreExtracto')?.touched) {
+            <mat-error>El nombre del DS es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- Nombre del Referencia del Extracto del sistema (DS) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Referencia del Extracto / DS</mat-label>
+            <input matInput formControlName="expedienteNombreReferenciaExtracto">
+            @if (form.get('expedienteNombreReferenciaExtracto')?.invalid &&
+            form.get('expedienteNombreReferenciaExtracto')?.touched) {
+            <mat-error>La referencia es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- Versión del Extracto del sistema (DS) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Versión del Extracto / DS</mat-label>
+            <input matInput formControlName="expedienteNombreVersionExtracto">
+            @if (form.get('expedienteNombreVersionExtracto')?.invalid && form.get('expedienteNombreVersionExtracto')?.touched) {
+            <mat-error>La versión es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- campo Envío del Extracto del sistema (DS) -->
+        <mat-slide-toggle formControlName="expedienteNombreEnvioExtracto">
+            Envío del Extracto / DS a EE.FF.
+        </mat-slide-toggle>
+
+        <!-- campo FECHA del Extracto del sistema (DS) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha del Extracto / Definición del Sistema (DS)</mat-label>
+            <input matInput [matDatepicker]="pickerFechaExtracto" formControlName="expedienteNombreFechaExtracto" readonly
+                (click)="pickerFechaExtracto.open()">
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaExtracto"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaExtracto></mat-datepicker>
+            @if (form.get('expedienteNombreFechaExtracto')?.invalid
+            && form.get('expedienteNombreFechaExtracto')?.touched) {
+            <mat-error>El campo Fecha de la Definición del Sistema (DS) es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- campo Carga Archivo del Extracto del sistema (DS) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Extracto / Definición del Sistema (DS) – Archivo</mat-label>
+            <input matInput formControlName="expedienteNombreArchivoExtracto">
+            @if (form.get('expedienteNombreArchivoExtracto')?.invalid
+            && form.get('expedienteNombreArchivoExtracto')?.touched) {
+            <mat-error>El campo Archivo de la Definición del Sistema (DS) es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <!-- BLOQUE 3 - SIGNIFICATIVIDAD -->
+        <!-- campo de tipo de CAMBIO -->
+        <mat-form-field appearance="outline">
+            <mat-label>Tipo de cambio</mat-label>
+            <mat-select formControlName="expedienteNombreCambio">
+                <mat-option value="">Seleccione tipo de cambio</mat-option>
+                @for (c of cambio; track c.id) {
+                <mat-option [value]="c.id">
+                    {{ c.nombre_Cambio }}
+                </mat-option>
+                }
+            </mat-select>
+            @if (form.get('expedienteNombreCambio')?.invalid
+            && form.get('expedienteNombreCambio')?.touched) {
+            <mat-error>El Tipo de cambio es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- campo de Título del CAMBIO -->
+        <mat-form-field appearance="outline">
+            <mat-label>Título del Cambio</mat-label>
+            <input matInput formControlName="expedienteNombreTituloCambio">
+            @if (form.get('expedienteNombreTituloCambio')?.invalid
+            && form.get('expedienteNombreTituloCambio')?.touched) {
+            <mat-error>El campo Título del cambio es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- campo de Significatividad del CAMBIO -->
+        <mat-form-field appearance="outline">
+            <mat-label>Significatividad del cambio</mat-label>
+            <mat-select formControlName="expedienteNombreSignificativoCambio">
+                <mat-option value="">Seleccione la Significatividad</mat-option>
+                @for (s of significativo; track s.id) {
+                <mat-option [value]="s.id">
+                    {{ s.nombre_Significatividad }}
+                </mat-option>
+                }
+            </mat-select>
+            @if (form.get('expedienteNombreSignificativoCambio')?.invalid
+            && form.get('expedienteNombreSignificativoCambio')?.touched) {
+            <mat-error>La Significatividad del cambio es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- Versión Significatividad del CAMBIO -->
+        <mat-form-field appearance="outline">
+            <mat-label>Significatividad del Cambio Versión / Revisión (V/Rev.)</mat-label>
+            <input matInput formControlName="expedienteNombreVersionCambio">
+            @if (form.get('expedienteNombreVersionCambio')?.invalid
+            && form.get('expedienteNombreVersionCambio')?.touched) {
+            <mat-error>El campo de la Versión de la Significatividad es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- FECHA Significatividad del CAMBIO -->
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha de la Declaración de la Significatividad del cambio</mat-label>
+            <input matInput [matDatepicker]="pickerFechaCambio" formControlName="expedienteNombreFechaCambio" readonly
+                (click)="pickerFechaCambio.open()">
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaCambio"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaCambio></mat-datepicker>
+            @if (form.get('expedienteNombreFechaCambio')?.invalid
+            && form.get('expedienteNombreFechaCambio')?.touched) {
+            <mat-error>El campo Fecha de la Declaración de la Significatividad es obligatorio</mat-error>
+            }
+        </mat-form-field>
+    
+        <!-- campo Declaración Significatividad del CAMBIO -->
+        <mat-form-field appearance="outline">
+            <mat-label>Declaración de la Significatividad del Cambio – Archivo</mat-label>
+            <input matInput formControlName="expedienteNombreArchivoCambio">
+            @if (form.get('expedienteNombreArchivoCambio')?.invalid
+            && form.get('expedienteNombreArchivoCambio')?.touched) {
+            <mat-error>La Carga de archivo de la Declaración de la Significatividad es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <!-- BLOQUE 4 - Ficha de Gestión Compartida (FGC) -->
+        <!-- Nombre de Ficha de Gestión Compartida (FGC) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre de la Ficha de Gestión Compartida (FGC)</mat-label>
+            <input matInput formControlName="expedienteNombreFicha">
+            @if (form.get('expedienteNombreFicha')?.invalid
+            && form.get('expedienteNombreFicha')?.touched) {
+            <mat-error>El Nombre de la Ficha de Gestión Compartida es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- FECHA de Ficha de Gestión Compartida (FGC) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha de la Ficha de Gestión Compartida (FGC)</mat-label>
+            <input matInput [matDatepicker]="pickerFechaFicha" formControlName="expedienteNombreFechaFicha" readonly
+                (click)="pickerFechaFicha.open()">
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaFicha"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaFicha></mat-datepicker>
+            @if (form.get('expedienteNombreFechaFicha')?.invalid
+            && form.get('expedienteNombreFechaFicha')?.touched) {
+            <mat-error>La Fecha de la Ficha de Gestión Compartida es obligatoria</mat-error>
+            }
+        </mat-form-field>
+    
+        <!-- Versión de Ficha de Gestión Compartida (FGC) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Versión de la Ficha de Gestión Compartida (FGC)</mat-label>
+            <input matInput formControlName="expedienteNombreVersionFicha">
+            @if (form.get('expedienteNombreVersionFicha')?.invalid
+            && form.get('expedienteNombreVersionFicha')?.touched) {
+            <mat-error>La Versión de la Ficha de Gestión Compartida es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- Carga de Archivo... de Ficha de Gestión Compartida (FGC) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Ficha de Gestión Compartida (FGC) – Archivo</mat-label>
+            <input matInput formControlName="expedienteNombreArchivoFicha">
+            @if (form.get('expedienteNombreArchivoFicha')?.invalid
+            && form.get('expedienteNombreArchivoFicha')?.touched) {
+            <mat-error>La Carga de Archivo de la Ficha de Gestión Compartida es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <!-- BLOQUE 5 - Informe Pruebas Aplicación (IPA) -->
+        <!-- Nombre del Informe Pruebas Aplicación (IPA) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre del Informe Pruebas Aplicación (IPA)</mat-label>
+            <input matInput formControlName="expedienteNombreIPA">
+            @if (form.get('expedienteNombreIPA')?.invalid
+            && form.get('expedienteNombreIPA')?.touched) {
+            <mat-error>El Informe Pruebas Aplicación (IPA) es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- Nombre Referencia Informe Pruebas Aplicación (IPA) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Referencia del Informe Pruebas Aplicación (IPA)</mat-label>
+            <input matInput formControlName="expedienteNombreReferenciaIPA">
+            @if (form.get('expedienteNombreReferenciaIPA')?.invalid
+            && form.get('expedienteNombreReferenciaIPA')?.touched) {
+            <mat-error>La Referencia del Informe Pruebas Aplicación (IPA) es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- Nombre Versión Informe Pruebas Aplicación (IPA) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Versión del Informe Pruebas Aplicación (IPA)</mat-label>
+            <input matInput formControlName="expedienteNombreVersionIPA">
+            @if (form.get('expedienteNombreVersionIPA')?.invalid
+            && form.get('expedienteNombreVersionIPA')?.touched) {
+            <mat-error>La Versión del Informe Pruebas Aplicación (IPA) es obligatoria</mat-error>
+            }
+        </mat-form-field>
+        
+        <!-- FECHA Informe Pruebas Aplicación (IPA) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha del Informe Pruebas Aplicación (IPA)</mat-label>
+            <input matInput [matDatepicker]="pickerFechaIPA" formControlName="expedienteNombreFechaIPA" readonly
+                (click)="pickerFechaIPA.open()">
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaIPA"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaIPA></mat-datepicker>
+            @if (form.get('expedienteNombreFechaIPA')?.invalid
+            && form.get('expedienteNombreFechaIPA')?.touched) {
+            <mat-error>La Fecha del Informe Pruebas Aplicación (IPA) es obligatoria</mat-error>
+            }
+        </mat-form-field>
+    
+        <!-- Carga archivos... Informe Pruebas Aplicación (IPA) -->
+        <mat-form-field appearance="outline">
+            <mat-label>Informe Pruebas Aplicación (IPA) – Archivo</mat-label>
+            <input matInput formControlName="expedienteNombreArchivoIPA">
+            @if (form.get('expedienteNombreArchivoIPA')?.invalid
+            && form.get('expedienteNombreArchivoIPA')?.touched) {
+            <mat-error>La Carga de Archivo del Informe Pruebas Aplicación (IPA) es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <!-- BLOQUE 6 - Evaluador (AsBo) -->
+        <!-- campo Nombre del Evaluador (AsBo)-->
+        <mat-form-field appearance="outline">
+            <mat-label>Seleccione el nombre del Evaluador de Seguridad (AsBo)</mat-label>
+            <mat-select formControlName="expedienteNombreASBOEvaluador">
+                <mat-option value="">Seleccione el (AsBo)</mat-option>
+                @for (a of asbo; track a.id) {
+                <mat-option [value]="a.id">
+                    {{ a.nombre_Evaluador }}
+                </mat-option>
+                }
+            </mat-select>
+            @if (form.get('expedienteNombreASBOEvaluador')?.invalid
+            && form.get('expedienteNombreASBOEvaluador')?.touched) {
+            <mat-error>El nombre del Evaluador de Seguridad (AsBo) es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- campo Subcontratación externo del Evaluador (AsBo)-->
+        <mat-slide-toggle formControlName="expedienteNombreContrataEvaluador">
+            Subcontratación del Evaluador de Seguridad (AsBo)
+        </mat-slide-toggle>
+
+        <!-- campo FECHA PREVISTA del Evaluador (AsBo) -->
+        <mat-form-field appearance="outline">
+            <mat-label>FECHA PREVISTA del Evaluador de Seguridad (AsBo)</mat-label>
+            <input matInput [matDatepicker]="pickerFechaPrevistaAsbo" formControlName="expedienteNombrePrevistaEvaluador" readonly
+                (click)="pickerFechaPrevistaAsbo.open()">
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaPrevistaAsbo"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaPrevistaAsbo></mat-datepicker>
+            @if (form.get('expedienteNombrePrevistaEvaluador')?.invalid
+            && form.get('expedienteNombrePrevistaEvaluador')?.touched) {
+            <mat-error>La fecha prevista del Evaluador de Seguridad (AsBo) es obligatoria</mat-error>
+            }
+        </mat-form-field>
+    
+        <!-- campo FECHA EJECUCIÓN del Evaluador (AsBo) -->
+        <mat-form-field appearance="outline">
+            <mat-label>FECHA de EJECUCIÓN del Evaluador de Seguridad (AsBo)</mat-label>
+            <input matInput [matDatepicker]="pickerFechaEjecucionAsbo" formControlName="expedienteNombreEjecucionEvaluador" readonly
+                (click)="pickerFechaEjecucionAsbo.open()">
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaEjecucionAsbo"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaEjecucionAsbo></mat-datepicker>
+            @if (form.get('expedienteNombreEjecucionEvaluador')?.invalid
+            && form.get('expedienteNombreEjecucionEvaluador')?.touched) {
+            <mat-error>La fecha de ejecución del Evaluador de Seguridad (AsBo) es obligatoria</mat-error>
+            }
+        </mat-form-field>
+    
+        <!-- campo Versión del Evaluador (AsBo)-->
+        <mat-form-field appearance="outline">
+            <mat-label>Versión del Informe del Evaluador de Seguridad (AsBo)</mat-label>
+            <input matInput formControlName="expedienteNombreVersionEvaluador">
+            @if (form.get('expedienteNombreVersionEvaluador')?.invalid
+            && form.get('expedienteNombreVersionEvaluador')?.touched) {
+            <mat-error>La Versión del Informe del Evaluador de Seguridad (AsBo) es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- campo Carga archivo... Informe del Evaluador (AsBo)-->
+        <mat-form-field appearance="outline">
+            <mat-label>Informe del Evaluador de Seguridad (AsBo) – Archivo</mat-label>
+            <input matInput formControlName="expedienteNombreArchivoEvaluador">
+            @if (form.get('expedienteNombreArchivoEvaluador')?.invalid
+            && form.get('expedienteNombreArchivoEvaluador')?.touched) {
+            <mat-error>La carga de Archivo del Informe del Evaluador de Seguridad (AsBo) es obligatoria</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- BOTONES Guardar / Cancelar -->
+        <div class="grid-config">
+            <button mat-raised-button color="primary" [disabled]="form.pristine || form.invalid" type="submit">
+                <mat-icon>{{ editando ? 'save' : 'add' }}</mat-icon>
+                {{ editando ? 'Guardar cambios' : 'Crear Experto (EER)' }}
+            </button>
+            <button mat-button type="button" (click)="volver()">
+                <mat-icon>close</mat-icon>
+                Cancelar
+            </button>
+        </div>
+    
+    </form><!-- Fin de FORMULARIO EN VERTICAL -->
+    
+</mat-card><!-- Fin Tarjeta PANEL de EXPEDIENTES -->

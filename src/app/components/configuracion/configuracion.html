@@ -1,0 +1,82 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        configuracion.html
+    Descripción:    Plantilla HTML del área de Configuración del sistema. Proporciona acceso a las distintas
+                    secciones administrativas del GSXPD, mostrando información del usuario autenticado y enlaces
+                    directos a los paneles de gestión.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al panel principal.
+      - Muestra información del usuario autenticado (nombre y rol).
+      - Ofrece accesos directos a los módulos de administración: usuarios, expertos, titularidad, unidades organizativas,
+        tipos de cambio, significatividad y evaluadores.
+      - Contiene botones con routerLink para navegar entre las distintas áreas del sistema.
+      - Incluye un botón de cierre de sesión.
+    ---------------------------------------------------------------
+-->
+<div class="gestion-container"><!-- CONTENEDOR principal -->
+    <!-- CABECERA -->
+    <button mat-raised-button color="primary" [routerLink]="'/panel'" class="btn-volver"><!-- Botón VOLVER 'BACK'-->
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Panel de control
+    </button>
+    <mat-toolbar color="primary" class="mat-elevation-z2 toolbar">
+        <span class="titulo-configuracion">Área de Administración/Configuración</span>
+        <span class="spacer"></span>
+        <button mat-raised-button color="warn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Cerrar sesión
+        </button>
+    </mat-toolbar>
+    
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- TARJETA DE INFORMACIÓN DEL USUARIO -->
+    <mat-card class="info-card">
+        <mat-card-title>Información del usuario</mat-card-title>
+        <mat-card-content>
+            <p><strong>Usuario:</strong> {{ username }}</p>
+            <p><strong>Rol:</strong> {{ role }}</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- OPCIONES SEGÚN ROL -->
+    <mat-card class="opciones-card">
+        <mat-card-title>Opciones disponibles</mat-card-title>
+        <mat-card-content>
+            <mat-list>
+                <p>Administración / Configuración del sistema de Expedientes</p>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- Botones de NAVEGACIÓN del panel Configuración/Administración de Expedientes-->
+    <div class="grid-config">
+        <button mat-raised-button routerLink="/expedientes">Panel Expedientes</button>
+        <button mat-raised-button routerLink="/expedientes/crear">Crear Expedientes</button>
+        <button mat-raised-button routerLink="/expertos">Panel Expertos (EER)</button>
+        <button mat-raised-button routerLink="/expertos/crear">Crear Experto (EER)</button>
+        <button mat-raised-button routerLink="/titularidad">Panel Titularidad (RFIG)</button>
+        <button mat-raised-button routerLink="/titularidad/crear">Crear Titularidad (RFIG)</button>
+        <button mat-raised-button routerLink="/unidad-organizativa">Panel Unidad Organizativa</button>
+        <button mat-raised-button routerLink="/unidad-organizativa/crear">Crear Unidad Organizativa</button>
+        <button mat-raised-button routerLink="/cambio">Panel tipo de Cambio</button>
+        <button mat-raised-button routerLink="/cambio/crear">Crear tipo de Cambio</button>
+        <button mat-raised-button routerLink="/significatividad">Panel Significatividad</button>
+        <button mat-raised-button routerLink="/significatividad/crear">Crear Significatividad</button>
+        <button mat-raised-button routerLink="/evaluador">Panel Evaluador (AsBo)</button>
+        <button mat-raised-button routerLink="/evaluador/crear">Crear Evaluador (AsBo)</button>        
+    </div>
+
+</div><!-- Fin CONTENEDOR principal -->

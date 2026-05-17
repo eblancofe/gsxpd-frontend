@@ -1,0 +1,120 @@
+html2pdf__container .no-print {
+    display: none !important;
+}
+/* Ocultar elementos marcados como no imprimibles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Imprimir SOLO el contenido del informe */
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    #informe,
+    #informe * {
+        visibility: visible !important;
+    }
+
+    #informe {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
+mat-card {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.informe-card {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.btn-volver {
+    align-self: flex-start;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    width: fit-content;
+}
+
+.btn-volver mat-icon {
+    font-size: 20px;
+}
+
+.seccion {
+    padding: 16px;
+}
+
+.botones-pdf {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-pdf.mat-mdc-raised-button {
+    background-color: #1976d2;
+    color: #fff;
+}
+
+.btn-pdf mat-icon {
+    color: #fff;
+}
+
+mat-card-subtitle {
+    text-decoration: underline;
+}
+
+/* === BOTONES DE OPCIONES === */
+.grid-config button {
+    background: var(--mat-sys-on-primary-fixed-variant) !important; //azul original
+    color: white !important;
+    border: none;
+    padding: 20px;
+    font-size: 16px;
+    //border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+    text-transform: none; //evita mayúsculas Material
+}
+
+.grid-config button:hover {
+    background: #1e4ea8 !important; //azul original
+    transform: translateY(-3px);
+}
+
+/* === BOTÓN ACTIVO (cuando estás en esa ruta) === */
+.grid-config button.active-link {
+    background: #1e4ea8 !important;
+    border: 2px solid #4caf50;
+}
+
+.cabecera-pdf {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.logo-pdf {
+    height: 48px;
+}
+
+.titulo-pdf {
+    font-size: 22px;
+    font-weight: bold;
+}

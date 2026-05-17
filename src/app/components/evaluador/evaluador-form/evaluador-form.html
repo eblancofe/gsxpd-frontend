@@ -1,0 +1,157 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        evaluador-form.html
+    Descripción:    Plantilla HTML del formulario para la creación y edición de Evaluadores (AsBo). 
+                    Incluye controles de entrada validados mediante Reactive Forms, selección de país, 
+                    mensajes de error y botones de acción para guardar o cancelar la operación.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Utiliza el componente reutilizable <app-boton-volver> para regresar al área de Configuración.
+      - Muestra dinámicamente el título según si se está creando o editando un Evaluador (AsBo).
+      - Implementa Reactive Forms con validaciones por campo y mensajes de error contextuales.
+      - Incluye un selector de país cargado dinámicamente mediante directiva @for.
+      - Presenta botones de acción para guardar los cambios o cancelar la operación.
+    ---------------------------------------------------------------
+-->
+<!--
+<button type="button" (click)="volver_panel()">&larr; Volver al panel</button>
+-->
+<mat-card class="mat-elevation-z2"><!-- Tarjeta PANEL EXPERTOS (EER) -->
+    <!-- BOTÓN VOLVER a configuración -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+
+    <mat-card-title><!-- TÍTULO -->
+        <strong>{{ editando ? 'Editar Evaluador (AsBo)' : 'Insertar Nuevo Evaluador (AsBo)' }}</strong>
+    </mat-card-title>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- FORMULARIO EN VERTICAL -->
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="form-vertical">
+<!--
+<form [formGroup]="form" (ngSubmit)="guardar()" class="tabla-cuadricula">
+-->
+    <!-- Nombre Evaluador (AsBo) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Nombre del Evaluador (AsBo)</mat-label>
+        <input matInput formControlName="nombre">
+        @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+        <mat-error>El nombre del Evaluador (AsBo) es obligatorio</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- tabla País (relacionada) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Seleccione un país</mat-label>
+
+        <mat-select formControlName="pais">
+            <mat-option value="">Seleccione un país</mat-option>
+            @for (p of paises; track p.id) {
+            <mat-option [value]="p.nombre_Paises">
+                {{ p.nombre_Paises }}
+            </mat-option>
+            }
+        </mat-select>
+
+        @if (form.get('pais')?.invalid && form.get('pais')?.touched) {
+            <mat-error>Selección de país es obligatorio</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- campo Dirección (AsBo) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="direccion">
+        @if (form.get('direccion')?.invalid && form.get('direccion')?.touched) {
+        <mat-error>La dirección del Evaluador (AsBo) es obligatoria</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- Código postal (AsBo) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Código postal</mat-label>
+        <input matInput formControlName="postal">
+        @if (form.get('postal')?.invalid && form.get('postal')?.touched) {
+        <mat-error>El Código postal del Evaluador (AsBo) es obligatorio</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- campo Ciudad (AsBo) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Ciudad</mat-label>
+        <input matInput formControlName="ciudad">
+        @if (form.get('ciudad')?.invalid && form.get('ciudad')?.touched) {
+        <mat-error>La ciudad del Evaluador (AsBo) es obligatoria</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- campo Teléfono/Móvil (AsBo) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Teléfono/Móvil</mat-label>
+        <input matInput formControlName="telefono">
+        @if (form.get('telefono')?.hasError('required') && form.get('telefono')?.touched) {
+        <mat-error>El Teléfono/Móvil del Evaluador (AsBo) es obligatorio</mat-error>
+        }
+        @if (form.get('telefono')?.hasError('pattern') && form.get('telefono')?.touched) {
+        <mat-error>El formato del Teléfono/Móvil del Evaluador (AsBo) no es válido</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- campo Email (AsBo) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Email de contacto</mat-label>
+        <input matInput formControlName="email">
+        @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+        <mat-error>Email del Evaluador (AsBo) es obligatorio</mat-error>
+        }
+        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+        <mat-error>El formato del Email del Evaluador (AsBo) no es válido</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- campo Contacto (AsBo) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Contacto</mat-label>
+        <input matInput formControlName="contacto">
+        @if (form.get('contacto')?.invalid && form.get('contacto')?.touched) {
+        <mat-error>El contacto del Evaluador (AsBo) es obligatorio</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- campo Web del Evaluador (AsBo) -->
+    <mat-form-field appearance="outline">
+        <mat-label>Web del Evaluador (AsBo)</mat-label>
+        <input matInput formControlName="web">
+        @if (form.get('web')?.hasError('required') && form.get('web')?.touched) {
+        <mat-error>Web del Evaluador (AsBo) es obligatorio</mat-error>
+        }
+        @if (form.get('web')?.hasError('pattern') && form.get('web')?.touched) {
+        <mat-error>Web del Evaluador (AsBo) no es válido</mat-error>
+        }
+    </mat-form-field>
+
+    <!-- BOTONES Guardar / Cancelar -->
+        <div class="grid-config">
+            <button mat-raised-button color="primary" [disabled]="form.pristine || form.invalid" type="submit">
+                <mat-icon>{{ editando ? 'save' : 'add' }}</mat-icon>
+                {{ editando ? 'Guardar cambios' : 'Crear Evaluador (AsBo)' }}
+            </button>
+            <button mat-button type="button" (click)="volver()">
+                <mat-icon>close</mat-icon>
+                Cancelar
+            </button>
+        </div>
+
+    </form><!-- Fin de FORMULARIO EN VERTICAL -->
+
+</mat-card><!-- Fin Tarjeta PANEL de EVALUADOR (AsBo) -->

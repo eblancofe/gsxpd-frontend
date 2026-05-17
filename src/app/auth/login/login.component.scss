@@ -1,0 +1,162 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+/*
+.login-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 20px;
+}
+*/
+.login-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1e3c72; // tu color
+    box-sizing: border-box;
+    padding: 24px; // importante para móviles
+}
+.login-box {
+    margin: 0;
+    background: white;
+    padding: 40px 50px;
+    border-radius: 12px;
+    width: 380px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.title {
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.subtitle {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.form-item {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border-color 0.2s ease;
+}
+
+input:focus {
+    border-color: #1e3c72;
+    outline: none;
+}
+/*
+button {
+    width: 100%;
+    padding: 12px;
+    background: #1e3c72;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+button:hover {
+    background: #16325c;
+}
+
+button:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+*/
+.error {
+    color: red;
+    margin-top: 15px;
+}
+
+.logo {
+    width: 90px;
+}
+
+.logo_invertido {
+    width: 90px;
+    filter: invert(100%) grayscale(100%);
+}
+
+.flecha {
+    width: 80px; // Tamaño ajustable
+    height: 100px;
+    fill: #073c70; //Color de la flecha
+    transition: fill;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.form-item button.btn-login {
+    width: 100%;
+    margin: 0;
+    //display: block;
+    box-sizing: border-box;
+}
+
+/* === GRID DE BOTONES === */
+.grid-config {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+
+/* === BOTONES DE OPCIONES === */
+.grid-config button {
+    background: var(--mat-sys-on-primary-fixed-variant) !important; //azul original
+    color: white !important;
+    border: none;
+    padding: 20px;
+    font-size: 16px;
+    //border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+    text-transform: none; //evita mayúsculas Material
+}
+
+.grid-config button:hover {
+    background: #1e4ea8 !important; //azul original
+    transform: translateY(-3px);
+}
+
+/* === BOTÓN ACTIVO (cuando estás en esa ruta) === */
+.grid-config button.active-link {
+    background: #1e4ea8 !important;
+    border: 2px solid #4caf50;
+    /* borde verde original */
+}
+
+.btn-login {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    /* igual que los inputs ajustados */
+    box-sizing: border-box;
+    margin-top: 10px;
+}

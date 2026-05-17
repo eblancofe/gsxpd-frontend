@@ -1,0 +1,66 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        login.component.html
+    Descripción:    Plantilla HTML del componente de acceso al sistema. Contiene la estructura visual 
+                    del formulario de login, incluyendo logotipos, elementos decorativos SVG y campos
+                    de entrada para usuario y contraseña.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Muestra el logotipo institucional del sistema (GSXPD).
+      - Incluye un elemento SVG decorativo con doble flecha.
+      - Contiene el formulario de autenticación con campos enlazados mediante ngModel.
+      - Presenta mensajes de error y controles de interacción.
+    ---------------------------------------------------------------
+-->
+<div class="login-wrapper">
+    <div class="login-box">
+        <img src="logo_GSXPD.svg" class="logo_invertido" alt="Logo de GSXPD">
+        <svg class="flecha" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <!-- Primera flecha -->
+            <polygon points="0,20 70,20 70,10 100,26 70,40 70,30 0,30" />
+            <!-- Segunda flecha, directamente debajo -->
+            <polygon points="0,70 70,70 70,60 100,76 70,90 70,80 0,80" />
+        </svg>
+        <img src="logo_GSXPD.svg" class="logo" alt="Logo de GSXPD">
+        <h1 class="title">Sistema de Gestión de Expedientes Digitales</h1>
+        <h2>(GSXPD)</h2>
+        <p class="subtitle">Acceso restringido</p>
+        
+        <form [formGroup]="form" (ngSubmit)="login()"><!-- Formulario reactivo -->
+            <!-- Usuario -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Usuario</mat-label>
+                <input matInput formControlName="username">
+                @if (form.get('username')?.hasError('required') && form.get('username')?.invalid && form.get('username')?.touched) {
+                    <mat-error>El usuario es obligatorio</mat-error>
+                }
+            </mat-form-field>
+            <!-- Contraseña -->
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Contraseña</mat-label>
+                <input matInput type="password" formControlName="password">
+                @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+                    <mat-error>La contraseña es obligatoria</mat-error>
+                }
+            </mat-form-field>
+            <!-- Botón -->
+             <div class="grid-config">
+                <button mat-raised-button color="primary" type="submit">
+                    <mat-icon>login</mat-icon>
+                    Entrar
+                </button>
+            </div>
+            <!-- Error backend -->
+            @if (errorMessage) {
+                <p class="error">{{ errorMessage }}</p>
+            }
+        </form>
+    </div>
+</div>

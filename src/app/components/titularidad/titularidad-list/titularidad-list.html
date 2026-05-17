@@ -1,0 +1,78 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        titularidad-list.html
+    Descripción:    Plantilla HTML del listado de Titularidades de línea (RFIG). Permite buscar, visualizar, paginar
+                    y gestionar las titularidades registradas, ofreciendo acciones de edición y eliminación para
+                    cada elemento dentro del sistema GSXPD.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al área de Configuración.
+      - Implementa un buscador enlazado mediante ngModel, filtrando las titularidades en tiempo real.
+      - Muestra una tabla con el nombre de cada titularidad registrada.
+      - Proporciona acciones de edición y eliminación por registro.
+      - Incorpora controles de paginación para navegar entre páginas de resultados.
+    ---------------------------------------------------------------
+-->
+<mat-card class="mat-elevation-z2"><!-- CONTENEDOR principal -->
+    <!-- BOTÓN VOLVER -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+    <!-- Título -->
+    <mat-card-title><strong>Listado de la Titularidad de la línea</strong></mat-card-title>
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BUSCADOR dinámico -->
+    <mat-form-field appearance="outline" class="buscador">
+        <mat-label>Buscar la Titularidad de la línea</mat-label>
+        <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre de titulariad de la línea">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Inicio Tabla listado Titularidad -->
+    <table mat-table [dataSource]="dataSource" class="tabla-usuarios mat-elevation-z1">
+        <ng-container matColumnDef="nombre"><!-- campo nombre Titularidad -->
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Nombre del Titular de la línea </th>
+            <td mat-cell *matCellDef="let u"> {{ u.nombre_Titularidad }} </td>
+        </ng-container>
+
+        <!-- ACCIONES -->
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Acciones </th>
+            <td mat-cell *matCellDef="let u">
+                <button mat-icon-button color="primary" (click)="editTitularidad(u)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" class="rojo" (click)="deleteTitularidad(u.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <!-- Cabecera (Header) + Filas (Rows) -->
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+    </table><!-- Fin Tabla listado Titularidad -->
+
+    <!-- PAGINACIÓN DEL BACKEND -->
+    <div class="paginacion">
+        <button mat-raised-button color="primary" (click)="prevPage()" [disabled]="page === 1">
+            <mat-icon>arrow_back</mat-icon>
+            Anterior
+        </button>
+        <span class="pagina-info">Página {{ page }} de {{ lastPage }}</span><!-- paginador actual -->
+        <button mat-raised-button color="primary" (click)="nextPage()" [disabled]="page === lastPage">
+            Siguiente
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</mat-card><!-- Fin CONTENEDOR principal -->

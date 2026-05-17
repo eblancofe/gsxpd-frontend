@@ -1,0 +1,44 @@
+.top-menu {
+    background: #1e1e1e;
+    padding: 12px;
+    display: flex;
+    gap: 20px;
+}
+
+.top-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.top-menu a.active {
+    border-bottom: 2px solid #4caf50;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.contenido {
+    margin-top: 0px;
+}
+
+@media (max-width: 800px) {
+    .contenido {
+        //margin-top: 150px;
+        margin-top: calc(var(--menu-mobile-height, 260px));
+    }
+}
+
+html,
+body,
+app-root,
+.contenido,
+.top-menu {
+    min-width: 0 !important;
+}
+
+.contenido.no-padding {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}

@@ -1,0 +1,72 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        menu.component.html
+    Descripción:    Plantilla HTML del menú principal de navegación del sistema GSXPD. Muestra dinámicamente las
+                    opciones del menú según el estado de sesión del usuario, permitiendo acceder a las distintas
+                    áreas del sistema y ofreciendo controles de inicio y cierre de sesión.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Renderiza dinámicamente los elementos del menú mediante directivas @for y @if.
+      - Muestra las opciones del menú únicamente cuando el usuario ha iniciado sesión.
+      - Incluye un botón de inicio de sesión cuando no existe sesión activa.
+      - Presenta información del usuario autenticado (username y rol) en la parte derecha del menú.
+      - Proporciona un botón de cierre de sesión accesible y visible solo cuando el usuario está autenticado.
+      - Utiliza routerLinkActive y opciones exactas para resaltar la ruta activa en el menú.
+    ---------------------------------------------------------------
+-->
+<!-- Componente contenedor de encabezado de Menú navegación -->
+<mat-toolbar color="primary" class="toolbar mat-elevation-z2">
+    <div class="logo-container">
+        <img src="logo_GSXPD.svg" alt="Logo" class="logo"><!-- Logotipo de aplicación "GSXPD" -->
+        <span class="app-name-mobile">GSXPD</span><!-- solo display en responsive móvil/tablet -->
+    </div>
+    
+    <!-- Navegación zona izquierda -->
+    <div class="left-section">
+        @if (loggedIn) {
+            @for (item of menuItems; track item.route) {
+                <!-- Botones que conforman el menú de navegación principal -->
+                <button mat-button [routerLink]="item.route" routerLinkActive="active-link"
+                    [routerLinkActiveOptions]="item.route === '/expedientes' ? { exact: true } : {}">
+                    {{ item.label }}
+                </button>
+            }
+        }
+    </div><!-- Navegación zona izquierda -->
+    <span class="spacer"></span><!-- Espaciador -->
+    <div class="right-section"><!-- Navegación zona derecha -->
+        <!-- Botón de inicio de sesión si no está la sesión iniciada -->
+        @if (!loggedIn) {
+            <button mat-raised-button color="accent" routerLink="/login">
+                <mat-icon>login</mat-icon>
+                Iniciar sesión
+            </button>
+        }
+        <!-- Nombre de Usuario + Botón de inicio de sesión estando la sesión iniciada -->
+        @if (loggedIn) {
+            <span class="usuario-info">
+                <mat-icon>account_circle</mat-icon>
+                {{ usuario?.username }} ({{ usuario?.role }})
+            </span>
+            <!--
+            <button mat-raised-button color="warn" (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                Cerrar sesión
+            </button>
+            -->
+            <!-- Botón Cerrar Sesión -->
+            <button mat-raised-button color="warn" (click)="cerrarSesion()">
+                <mat-icon>logout</mat-icon>
+                Cerrar sesión
+            </button>            
+        }
+    </div>
+
+</mat-toolbar><!-- Fin de Componente contenedor de encabezado de Menú navegación -->

@@ -1,0 +1,105 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        users-form.html
+    Descripción:    Plantilla HTML del formulario para la creación y edición de Usuarios del sistema GSXPD. Utiliza
+                    Reactive Forms con validaciones y permite gestionar los datos principales del usuario: nombre de
+                    usuario, email, contraseña opcional, rol y estado de actividad.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al área de Gestión de Usuarios.
+      - Implementa Reactive Forms con validaciones para username, email y formato de email.
+      - Permite modificar la contraseña únicamente si el usuario introduce un nuevo valor.
+      - Ofrece un selector de roles: admin, eer, lectura y secretaria.
+      - Incluye un checkbox para activar o desactivar al usuario.
+      - Presenta botones de acción para guardar los cambios o cancelar la operación.
+    ---------------------------------------------------------------
+-->
+<mat-card class="mat-elevation-z2"><!-- CONTENEDOR principal -->
+    <!-- BOTÓN VOLVER -->
+    <button mat-raised-button color="primary" routerLink="/gestion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Gestión
+    </button>
+    <!-- Título -->
+    <mat-card-title><strong>{{ editando ? 'Editar Usuario' : 'Creación de Nuevo Usuario' }}</strong></mat-card-title>
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="form-vertical"><!-- Inicio FORMULARIO EN VERTICAL -->
+        <!-- USERNAME -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre de Usuario</mat-label>
+            <input matInput formControlName="username">
+            <!-- verificación de rellenado de campo -->
+            @if (form.get('username')?.invalid && form.get('username')?.touched) {
+                <mat-error>El nombre de usuario es obligatorio</mat-error>
+            }
+        </mat-form-field>
+        <!-- EMAIL -->
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            <!-- verificación de rellenado y formato email -->
+            @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+                <mat-error>El email es obligatorio</mat-error>
+            }
+            @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+                <mat-error>El formato del email no es válido</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- PASSWORD menú CREAR -->
+        @if (!editando) {
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <!-- verificación de rellenado -->
+            <input matInput type="password" formControlName="password">
+            @if (form.get('password')?.invalid && form.get('password')?.touched) {
+                <mat-error>La contraseña es obligatoria</mat-error>
+            }
+        </mat-form-field>
+        }
+
+        <!-- PASSWORD menú EDICIÓN -->
+        @if (editando) {
+        <mat-form-field appearance="outline">
+            <mat-label>Nueva Password (opcional)</mat-label>
+            <input matInput type="password" formControlName="password">
+        </mat-form-field>
+        }
+
+        <!-- Selección de ROL -->
+        <mat-form-field appearance="outline">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="role">
+                <!-- seleccionar 1 de 4 -->
+                <mat-option value="admin">Administrador</mat-option>
+                <mat-option value="eer">EER</mat-option>
+                <mat-option value="lectura">Lectura</mat-option>
+                <mat-option value="secretaria">Secretaria</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Usuario ACTIVO (CREACIÓN + EDICIÓN) -->
+        <mat-slide-toggle formControlName="isActive">Usuario Activo </mat-slide-toggle>
+
+        <!-- BOTONES ALINEADOS -->
+        <div class="grid-config">
+            <button mat-raised-button color="primary" [disabled]="form.pristine || form.invalid" type="submit">
+                <mat-icon>{{ editando ? 'save' : 'add' }}</mat-icon>
+                {{ editando ? 'Guardar cambios' : 'Crear Usuario' }}
+            </button>
+            <button mat-button type="button" (click)="volver()">
+                <mat-icon>close</mat-icon>
+                Cancelar
+            </button>
+        </div>
+    </form><!-- Fin Formulario vertical principal -->
+
+</mat-card><!-- Fin CONTENEDOR principal -->

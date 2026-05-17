@@ -1,0 +1,76 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        gestion.component.html
+    Descripción:    Plantilla HTML del área de Gestión de Usuarios. Proporciona acceso a las funciones de administración,
+                    coordinación y mantenimiento de usuarios dentro del sistema GSXPD, mostrando además información del
+                    usuario autenticado.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al panel principal.
+      - Muestra información del usuario autenticado (nombre y rol).
+      - Presenta las opciones disponibles dentro del área de gestión de usuarios.
+      - Proporciona accesos directos al listado de usuarios y al formulario de creación de nuevos usuarios.
+      - Incluye un botón de cierre de sesión.
+    ---------------------------------------------------------------
+-->
+<!--
+<app-boton-volver ruta="/panel"></app-boton-volver>
+-->
+<div class="gestion-container"><!-- CONTENEDOR principal -->
+    <!-- CABECERA del panel de GESTIÓN -->
+    <button mat-raised-button color="primary" [routerLink]="'/panel'" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Panel de control
+    </button>
+    <mat-toolbar color="primary" class="mat-elevation-z2 toolbar">
+        <span class="titulo-gestion">Área de Gestión de usuarios</span>
+        <span class="spacer"></span>
+        <button mat-raised-button color="warn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Cerrar sesión
+        </button>
+    </mat-toolbar>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- Tarjeta de INFORMACIÓN del USUARIO -->
+    <mat-card class="info-card">
+        <mat-card-title>Información del usuario</mat-card-title>
+        <mat-card-content>
+            <p><strong>Usuario:</strong> {{ username }}</p>
+            <p><strong>Rol:</strong> {{ role }}</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- Tarjeta Opciones disponibles según rol asignado -->
+    <mat-card class="opciones-card">
+        <mat-card-title>Opciones disponibles</mat-card-title>
+        <mat-card-content>
+            <mat-list>
+                <p>Gestión, Coordinación y Administración de usuarios</p>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BOTONES DE NAVEGACIÓN -->
+    <div class="grid-config">
+        <button mat-raised-button routerLink="/usuarios">
+            Panel de Usuario
+        </button>
+        <button mat-raised-button color="primary" routerLink="/usuarios/crear">
+            Crear nuevo Usuario
+        </button>
+    </div>
+    
+</div><!-- Fin de CONTENEDOR principal -->

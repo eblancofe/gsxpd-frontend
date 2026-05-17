@@ -1,0 +1,83 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        informe.component.html
+    Descripción:    Plantilla HTML del área de Gestión de Informes de Expedientes. Proporciona acceso a los distintos
+                    tipos de informes disponibles en el sistema GSXPD, mostrando además información del usuario
+                    autenticado y opciones de navegación.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al panel principal.
+      - Muestra información del usuario autenticado (nombre y rol).
+      - Presenta las opciones disponibles dentro del área de informes de expedientes.
+      - Proporciona accesos directos a:
+          * Selección de informe por expediente.
+          * Informe anual de expedientes.
+          * Informe por titularidad.
+          * Informe por unidad organizativa.
+      - Incluye un botón de cierre de sesión.
+    ---------------------------------------------------------------
+-->
+<div class="gestion-container"><!-- CONTENEDOR principal -->
+    <!-- CABECERA -->
+    <button mat-raised-button color="primary" [routerLink]="'/panel'" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Panel de control
+    </button>    
+    <mat-toolbar color="primary" class="mat-elevation-z2 toolbar"><!-- barra de navegación del panel de Informes -->
+        <span class="titulo-informe">Área de Gestión de Informes de Expedientes</span>
+        <span class="spacer"></span>
+        <button mat-raised-button color="warn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Cerrar sesión
+        </button>
+    </mat-toolbar>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+    
+    <!-- Tarjeta INFORMACIÓN del USUARIO -->
+    <mat-card class="info-card">
+        <mat-card-title>Información del usuario</mat-card-title>
+        <mat-card-content>
+            <p><strong>Usuario:</strong> {{ username }}</p>
+            <p><strong>Rol:</strong> {{ role }}</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- Tarjeta OPCIONES según ROL asignado -->
+    <mat-card class="opciones-card">
+        <mat-card-title>Opciones disponibles</mat-card-title>
+        <mat-card-content>
+            <mat-list>
+                <p>Gestión de Informes de Expedientes de Riesgos</p>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BOTONES DE NAVEGACIÓN -->
+    <div class="grid-config">
+        <button mat-raised-button routerLink="/expedientes/seleccionar">
+            Selección de Informe de Expedientes
+        </button>
+       <button mat-raised-button routerLink="/informe/anual">
+            Informe Anual de Expedientes
+        </button>
+        <button mat-raised-button routerLink="/informe/titularidad">
+            Informe de Expedientes por Titularidad
+        </button>
+        <button mat-raised-button routerLink="/informe/direcciones">
+            Informe de Expedientes por Unidad Organizativa
+        </button>
+    </div>
+
+</div> <!-- Fin de CONTENEDOR principal -->

@@ -1,0 +1,63 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        titularidad-form.html
+    Descripción:    Plantilla HTML del formulario para la creación y edición de Titularidades de línea (RFIG). Utiliza
+                    Reactive Forms con validaciones y permite gestionar el nombre asociado a cada titularidad dentro del
+                    sistema GSXPD.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al área de Configuración.
+      - Implementa Reactive Forms con validación del campo obligatorio.
+      - Permite crear o editar una titularidad según el modo actual (nuevo o edición).
+      - Presenta botones de acción para guardar los cambios o cancelar la operación.
+    ---------------------------------------------------------------
+-->
+<!--
+<button type="button" (click)="volver_panel()">&larr; Volver al panel</button>
+-->
+<mat-card class="mat-elevation-z2"><!-- Tarjeta PANEL EXPERTOS (EER) -->
+    <!-- BOTÓN VOLVER a configuración -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+
+    <mat-card-title><!-- TÍTULO -->
+        <strong>{{ editando ? 'Editar Titularidad' : 'Crear nueva Titularidad' }}</strong>
+    </mat-card-title>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- FORMULARIO EN VERTICAL -->
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="form-vertical">
+        <!-- Nombre Titularidad de línea -->
+        <mat-form-field appearance="outline">
+            <mat-label>Nombre del titular de la línea</mat-label>
+            <input matInput formControlName="nombre">
+            @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+            <mat-error>El nombre del titular es obligatorio</mat-error>
+            }
+        </mat-form-field>
+
+    <!-- BOTONES Guardar / Cancelar -->
+        <div class="grid-config">
+            <button mat-raised-button color="primary" [disabled]="form.pristine || form.invalid" type="submit">
+                <mat-icon>{{ editando ? 'save' : 'add' }}</mat-icon>
+                {{ editando ? 'Guardar cambios' : 'Crear Titularidad' }}
+            </button>
+            <button mat-button type="button" (click)="volver()">
+                <mat-icon>close</mat-icon>
+                Cancelar
+            </button>
+        </div>
+
+    </form><!-- Fin de FORMULARIO EN VERTICAL -->
+
+</mat-card><!-- Fin Tarjeta PANEL de TITULARIDAD -->

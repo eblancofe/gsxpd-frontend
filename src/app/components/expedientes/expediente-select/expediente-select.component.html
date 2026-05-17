@@ -1,0 +1,61 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        expedientes-select.component.html
+    Descripción:    Plantilla HTML para la selección de un expediente con el fin de generar su informe completo. Muestra
+                    un desplegable con los expedientes disponibles y un botón para acceder al informe del expediente seleccionado.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al panel principal.
+      - Presenta un selector dinámico de expedientes enlazado mediante ngModel, mostrando información clave de cada expediente.
+      - Habilita el botón de generación de informe únicamente cuando existe un expediente seleccionado.
+      - Facilita la navegación hacia el informe detallado del expediente elegido.
+    ---------------------------------------------------------------
+-->
+<!--
+<button type="button" (click)="volver_panel()">&larr; Volver al panel Informe</button>
+-->
+<mat-card class="mat-elevation-z2"><!-- Tarjeta PANEL seleccionar Expediente -->
+    <!-- BOTÓN VOLVER a configuración -->
+    <button mat-raised-button color="primary" routerLink="/informe" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver al panel Informe
+    </button>
+
+    <mat-card-title><!-- TÍTULO -->
+        <strong>Generar informe por expediente</strong>
+    </mat-card-title>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- seleccionar Expediente para Informe -->
+    <!-- SELECT MATERIAL -->
+    <mat-form-field appearance="outline" class="select-compact">
+        <mat-label>Selecciona un Expediente</mat-label>
+        <mat-select [(ngModel)]="expedienteSeleccionado">
+        <mat-option [value]="null">-- Selecciona un expediente --</mat-option>
+        @for (exp of expedientes; track exp.id) {
+        <mat-option [value]="exp.id">
+            {{ exp.nombre_Actuacion }} - {{ exp.nombre_Subactuacion }} - {{ exp.nombre_AParticular }}
+        </mat-option>
+        }
+        </mat-select>
+    </mat-form-field>
+
+    <!-- BOTÓN GENERAR INFORME -->
+    <div class="grid-config">
+        <button mat-raised-button color="primary"
+                [disabled]="!expedienteSeleccionado"
+                (click)="verInforme()">
+            <mat-icon>description</mat-icon>
+                Generar informe
+        </button>
+    </div>
+
+</mat-card><!-- Fin Tarjeta PANEL Seleccionar Expediente -->

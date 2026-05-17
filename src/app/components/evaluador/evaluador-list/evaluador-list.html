@@ -1,0 +1,82 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        evaluador-list.html
+    Descripción:    Plantilla HTML del listado de Evaluadores (AsBo). Permite buscar, visualizar, paginar y gestionar
+                    los registros existentes, ofreciendo acciones de edición y eliminación para cada elemento.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al área de Configuración.
+      - Implementa un campo de búsqueda enlazado mediante ngModel, actualizando los resultados en tiempo real.
+      - Muestra una tabla con los Evaluadores (AsBo), incluyendo su nombre y enlace a su página web.
+      - Proporciona acciones de edición y eliminación por registro.
+      - Incorpora controles de paginación para navegar entre páginas.
+    ---------------------------------------------------------------
+-->
+<mat-card class="mat-elevation-z2"><!-- CONTENEDOR principal -->
+    <!-- BOTÓN VOLVER -->
+    <button mat-raised-button color="primary" routerLink="/configuracion" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Configuración
+    </button>
+    <!-- Título -->
+    <mat-card-title><strong>Listado de Evaluadores de Seguridad (AsBo)</strong></mat-card-title>
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BUSCADOR dinámico -->
+    <mat-form-field appearance="outline" class="buscador">
+        <mat-label>Buscar el Evaluador de Seguridad (AsBo)</mat-label>
+        <input matInput (keyup)="filtrar($event)" placeholder="Buscar por nombre de el Evaluador de Seguridad (AsBo)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <!-- Inicio Tabla Evaluador (AsBo)-->
+    <table mat-table [dataSource]="dataSource" class="tabla-usuarios mat-elevation-z1">
+        <!-- muestra los 2 campos de la tabla de Expertos (EER)-->
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Nombre del Evaluador (AsBo) </th>
+            <td mat-cell *matCellDef="let u"> {{ u.nombre_Evaluador }} </td>
+        </ng-container>
+        <ng-container matColumnDef="web">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Web del Evaluador (AsBo) </th>
+            <td mat-cell *matCellDef="let u"> {{ u.web_Evaluador }} </td>
+        </ng-container>
+
+        <!-- ACCIONES en tabla -->
+        <ng-container matColumnDef="acciones">
+            <th mat-header-cell *matHeaderCellDef class="fondo_gris"> Acciones </th>
+            <td mat-cell *matCellDef="let u">
+                <button mat-icon-button color="primary" (click)="editEvaluador(u)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" class="rojo" (click)="deleteEvaluador(u.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <!-- Cabecera (Header) + Filas (Rows) -->
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+
+    </table><!-- Fin Tabla Evaluador (AsBo)-->
+
+    <!-- PAGINACIÓN DEL BACKEND -->
+    <div class="paginacion">
+        <button mat-raised-button color="primary" (click)="prevPage()" [disabled]="page === 1">
+            <mat-icon>arrow_back</mat-icon>
+            Anterior
+        </button>
+        <span class="pagina-info">Página {{ page }} de {{ lastPage }}</span><!-- paginación actual-->
+        <button mat-raised-button color="primary" (click)="nextPage()" [disabled]="page === lastPage">
+            Siguiente
+            <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</mat-card><!-- Fin CONTENEDOR principal -->

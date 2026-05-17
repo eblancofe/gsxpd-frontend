@@ -1,0 +1,73 @@
+<!--
+    ---------------------------------------------------------------
+    Archivo:        expediente.component.html
+    Descripción:    Plantilla HTML del área de Gestión del Expediente. Proporciona acceso a las funciones principales
+                    relacionadas con la administración y creación de expedientes dentro del sistema GSXPD, mostrando
+                    además información del usuario autenticado.
+    Autor:          Eugenio Blanco Fernández
+    Universidad:    Universitat Oberta de Catalunya (UOC)
+    Título Máster:  Máster Universitario en Desarrollo de sitios y
+                    aplicaciones Web
+    Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
+    Fecha creación: 07/03/2026
+    Última modif.:  10/04/2026
+
+    Detalles:
+      - Incluye el componente reutilizable <app-boton-volver> para regresar al panel principal.
+      - Muestra información del usuario autenticado (nombre y rol).
+      - Presenta las opciones disponibles dentro del área de gestión de expedientes.
+      - Proporciona accesos directos a la lista de expedientes y al formulario de creación de nuevos expedientes.
+      - Incluye un botón de cierre de sesión.
+    ---------------------------------------------------------------
+-->
+<div class="gestion-container"><!-- CONTENEDOR principal -->
+    <!-- CABECERA -->
+    <button mat-raised-button color="primary" [routerLink]="'/panel'" class="btn-volver">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Panel de control
+    </button>
+    <mat-toolbar color="primary" class="mat-elevation-z2 toolbar">
+        <span class="titulo-expediente">Área de Gestión del Expediente</span>
+        <span class="spacer"></span>
+        <button mat-raised-button color="warn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Cerrar sesión
+        </button>
+    </mat-toolbar>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- Tarjeta de INFORMACIÓN del USUARIO -->
+    <mat-card class="info-card">
+        <mat-card-title>Información del usuario</mat-card-title>
+        <mat-card-content>
+            <p><strong>Usuario:</strong> {{ username }}</p>
+            <p><strong>Rol:</strong> {{ role }}</p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- Tarjeta OPCIONES según ROL asignado -->
+    <mat-card class="opciones-card">
+        <mat-card-title>Opciones disponibles</mat-card-title>
+        <mat-card-content>
+            <mat-list>
+                <p>Gestión de Expedientes de Riesgos Operativos</p>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider><!-- separador entre 2 elementos -->
+
+    <!-- BOTONES DE NAVEGACIÓN -->
+    <div class="grid-config">
+        <button mat-raised-button color="primary" routerLink="/expedientes">
+            Panel Expedientes
+        </button>
+        <button mat-raised-button color="primary" routerLink="/expedientes/crear">
+            Crear Expediente
+        </button>
+    </div>
+
+</div><!-- Fin CONTENEDOR principal -->
