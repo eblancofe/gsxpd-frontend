@@ -8,7 +8,7 @@
  *  Título Máster:  Máster Universitario en Desarrollo de sitios y aplicaciones Web
  *  Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
  *  Fecha creación: 07/03/2026
- *  Última modif.:  09/05/2026
+ *  Última modif.:  17/05/2026
  *
  *  Detalles:
  *    - Consulta informes filtrados por año mediante el endpoint /informe.
