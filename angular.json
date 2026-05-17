@@ -32,7 +32,10 @@
             ],
             "styles": [
               "src/styles.scss"
-            ]
+            ],
+			"allowedCommonJsDependencies": [
+			  "html2pdf.js"
+			]
           },
           "configurations": {
             "production": {

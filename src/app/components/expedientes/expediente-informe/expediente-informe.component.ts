@@ -10,7 +10,7 @@
  *  Título Máster:  Máster Universitario en Desarrollo de sitios y aplicaciones Web
  *  Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
  *  Fecha creación: 26/03/2026
- *  Última modif.:  10/04/2026
+ *  Última modif.:  18/05/2026
  *
  *  Detalles:
  *    - Obtiene un expediente y todas sus listas asociadas desde el backend.
@@ -25,8 +25,8 @@ import { ExpedientesService } from '../../../services/expedientes.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
-import html2pdf from 'html2pdf.js';
 import { Router } from '@angular/router';
+import html2pdf from 'html2pdf.js';
 
 //Angular Material
 import { MatToolbarModule } from '@angular/material/toolbar';

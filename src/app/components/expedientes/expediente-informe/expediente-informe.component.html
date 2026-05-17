@@ -37,8 +37,8 @@
    <mat-divider></mat-divider>
    @if (expediente) {
       @let exp = expediente;
-      <!-- JSON del expediente (debug) -->
-      <pre>{{ exp | json }}</pre>
+      <!-- JSON del expediente (debug) para controlar los campos y detectar errores -->
+      <!-- <pre>{{ exp | json }}</pre> -->
    
       <div id="informe"><!-- PDF del Informe del Expediente -->
          <mat-card-title>

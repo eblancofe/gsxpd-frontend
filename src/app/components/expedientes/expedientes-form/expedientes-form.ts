@@ -47,9 +47,7 @@ import { MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DateAdapter } from '@angular/material/core';
-import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import * as moment from 'moment';
 
 export const MY_FORMATS = {
   parse: {
@@ -103,7 +101,6 @@ export class CustomDateAdapter extends NativeDateAdapter {
     MatSlideToggleModule,    
     MatSnackBarModule,
     MatDatepickerModule,
-    MatMomentDateModule,
     MatNativeDateModule
   ]
 })
@@ -139,7 +136,6 @@ export class ExpedientesFormComponent implements OnInit {
     private dateAdapter: DateAdapter<Date>
   ) { 
     this.dateAdapter.setLocale('es-ES'); 
-    moment.locale('es');
   }
 
   ngOnInit() {
@@ -148,7 +144,6 @@ export class ExpedientesFormComponent implements OnInit {
 
     //1. Crear formulario
     this.form = this.fb.group({
-      //expedienteNombreEER: ['', Validators.required],
       expedienteNombreEER: [[], Validators.required], //Campo obligatorio
       expedienteNombreDG: ['', Validators.required], //Campo obligatorio
       expedienteNombreTitular: ['', Validators.required], //Campo obligatorio
