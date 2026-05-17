@@ -23,47 +23,51 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';   
 
 @Injectable({ providedIn: 'root' }) //servicio disponible en toda la aplicación
 
 export class ExpedienteInformeService {
-  private api = 'http://localhost:3000'; //URL base de la API para informes de Expedientes
+  //URL base de la API para informes de Expedientes
+  //private api = 'http://localhost:3000'; 
+  private apiUrl = environment.apiUrl;
+  private apiUrl_dirigida = `${this.apiUrl}/expedientes`;
 
   constructor(private http: HttpClient) { } //Inyecta HttpClient para hacer peticiones HTTP
 
   //Obtiene un expediente completo por ID
   getExpedienteById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.api}/expedientes/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/expedientes/${id}`);
   }
 
   //Métodos para obtener listas de catálogos de las Tablas auxiliares que componen el Expediente
   //Obtiene los registros de la tabla Expertos (EER)
   getExpertos(): Observable<any> {
-    return this.http.get<any>(`${this.api}/expertos`);
+    return this.http.get<any>(`${this.apiUrl}/expertos`);
   }
   
   //Obtiene los registros de la tabla Unidad-Organizativa
   getDirecciones(): Observable<any> {
-    return this.http.get<any>(`${this.api}/unidad-organizativa`);
+    return this.http.get<any>(`${this.apiUrl}/unidad-organizativa`);
   }
 
   //Obtiene los registros de la tabla Titularidad
   getTitulares(): Observable<any> {
-    return this.http.get<any>(`${this.api}/titularidad`);
+    return this.http.get<any>(`${this.apiUrl}/titularidad`);
   }
 
   //Obtiene los registros de la tabla del tipo de Cambio
   getTiposCambio(): Observable<any> {
-    return this.http.get<any>(`${this.api}/cambio`);
+    return this.http.get<any>(`${this.apiUrl}/cambio`);
   }
 
   getSignificatividad(): Observable<any> {
-    return this.http.get<any>(`${this.api}/significatividad`);
+    return this.http.get<any>(`${this.apiUrl}/significatividad`);
   }
 
   //Obtiene los registros de la tabla Evaluador (Asbo)
   getAsbo(): Observable<any> {
-    return this.http.get<any>(`${this.api}/evaluador`);
+    return this.http.get<any>(`${this.apiUrl}/evaluador`);
   }
 
   //Cargar todo junto: expediente + tablas auxiliares

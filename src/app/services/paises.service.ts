@@ -19,16 +19,20 @@
 //Importa decoradores y servicios necesarios de Angular
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';  
 
 @Injectable({ providedIn: 'root' }) //servicio disponible en toda la aplicación
 
 export class PaisesService {
-  private api = 'http://localhost:3000/paises'; //URL base de la API para gestionar la tabla paises
+  //URL base de la API para gestionar la tabla paises
+  //private api = 'http://localhost:3000/paises';
+  private apiUrl = environment.apiUrl;
+  private apiUrl_dirigida = `${this.apiUrl}/paises`;
 
   constructor(private http: HttpClient) { } //Inyecta HttpClient para hacer peticiones HTTP
 
   //función que obtiene todos los países desde la API
   getAll() { 
-    return this.http.get<any[]>(this.api);
+    return this.http.get<any[]>(this.apiUrl_dirigida);
   }
 }//de class

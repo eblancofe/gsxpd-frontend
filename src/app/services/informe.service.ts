@@ -20,16 +20,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../environments/environment'; 
+  
 @Injectable({ providedIn: 'root', }) //servicio disponible en toda la aplicación
 
 export class InformeService {
-  private api = 'http://localhost:3000/informe'; //URL base de la API para gestionar la tabla informes
+  //URL base de la API para gestionar la tabla informes
+  //private api = 'http://localhost:3000/informe'; 
+  private apiUrl = environment.apiUrl;
+  private apiUrl_dirigida = `${this.apiUrl}/informe`;
 
   constructor(private http: HttpClient) { } //Inyecta HttpClient para hacer peticiones HTTP
 
   //función que obtiene todos los registros de Expedientes desde la API según el año seleccionado
   getInformesPorAnio(anio: number): Observable<any> { 
-    return this.http.get<any>(`${this.api}/por-anio/${anio}`);
+    return this.http.get<any>(`${this.apiUrl_dirigida}/por-anio/${anio}`);
   }
 }//de class
