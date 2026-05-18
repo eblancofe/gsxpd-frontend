@@ -82,6 +82,7 @@ export class ExpedienteInformeAnualComponent implements OnInit {
   expediente: any;
   titulares: any[] = [];
   columnas = ['actuacion', 'subactuacion', 'ap', 'fecha', 'titularidad'];
+  listaAnios: number[] = [];
 
   constructor(
     private expedientesService: ExpedientesService,
@@ -159,12 +160,33 @@ export class ExpedienteInformeAnualComponent implements OnInit {
   cargarExpedientes() { //Carga todos los expedientes del sistema
     this.cargando = true;
     this.expedientesService.getAll().subscribe(res => {
-      this.expedientesOriginales = res.data; // guardamos el original
-      this.filtrarPorAnio();
+      this.expedientesOriginales = res.data; //guardamos el original      
+      this.generarListaAnios(); //generamos rango de años según los años de los expedientes
+      this.filtrarPorAnio();      
       this.cargando = false;
       this.cdr.detectChanges(); //Fuerza a Angular a refrescar la vista
     });
   }    
+
+  generarListaAnios() {
+    const anios = this.expedientesOriginales
+      .map(exp => new Date(exp.nombre_IPA_Fecha).getFullYear())
+      .filter(a => !isNaN(a));
+
+    const min = Math.min(...anios) -1; //restamos 1 año - para dar margen
+    const max = Math.max(...anios) +1; //añadimos 1 año + para dar margen
+
+    this.listaAnios = this.generarRango(min, max);
+    console.log("LISTA DE AÑOS: ", this.listaAnios);
+  }
+
+  generarRango(min: number, max: number): number[] {
+    const lista = [];
+    for (let a = max; a >= min; a--) {
+      lista.push(a);
+    }
+    return lista;
+  }
 
   filtrarPorAnio() { //Filtra expedientes por año seleccionado
     console.log("AÑO SELECCIONADO:", this.anioSeleccionado); //para llevar un control
@@ -172,7 +194,6 @@ export class ExpedienteInformeAnualComponent implements OnInit {
     this.expedientes = this.expedientesOriginales.filter(exp => {
       const fechaRaw = exp.nombre_IPA_Fecha;
       if (!fechaRaw) return false;
-
       const fecha = new Date(fechaRaw);
       const anio = fecha.getFullYear();
       console.log("FECHA:", fechaRaw, "AÑO:", anio);
@@ -233,12 +254,10 @@ export class ExpedienteInformeAnualComponent implements OnInit {
     //Esperar a que el navegador termine de renderizar
     setTimeout(() => {
       ventana.focus();
-
       //MUY IMPORTANTE: usar onafterprint para cerrar la ventana
       ventana.onafterprint = () => {
         ventana.close();
       };
-
       ventana.print();
     }, 300);
   }
