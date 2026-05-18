@@ -42,7 +42,6 @@
     <mat-form-field appearance="outline" class="select-compact">
         <mat-label>Año</mat-label>
         <mat-select [(ngModel)]="anioSeleccionado" (ngModelChange)="filtrarPorAnio()">
-        <!-- @for (a of [2021,2022,2023,2024,2025,2026,2027,2029,2030]; track a) { -->
         @for (a of listaAnios; track a) {
             <mat-option [value]="a">{{ a }}</mat-option>
         }
