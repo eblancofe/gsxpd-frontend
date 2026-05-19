@@ -73,7 +73,10 @@ export class LoginComponent {
 
     const { username, password } = this.form.value;
     
-    this.authService.login({ username: username, password: password })
+    this.authService.login({ 
+      username: username.toLowerCase(), //convertimos siempre usuario a minúsculas
+      password: password 
+    })
       .subscribe({
         next: (response) => {
           sessionStorage.setItem('token', response.access_token); //Guardar token correctamente
