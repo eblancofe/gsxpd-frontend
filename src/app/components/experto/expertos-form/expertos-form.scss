@@ -91,3 +91,14 @@ mat-card {
     color: var(--mat-sys-on-error);
     font-weight: 600;
 }
+
+/* Responsive Móvil / Tablet */
+@media (max-width: 800px) {
+
+    mat-form-field,
+    mat-select,
+    input,
+    form {
+        width: 100% !important;
+    }
+}

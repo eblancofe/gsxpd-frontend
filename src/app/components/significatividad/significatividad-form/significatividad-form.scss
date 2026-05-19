@@ -1,3 +1,4 @@
+//Configuración general
 .form-vertical {
     display: flex;
     flex-direction: column;
@@ -8,13 +9,12 @@
 
 .acciones {
     display: flex;
-    justify-content: center;
-    /* o center si lo prefieres */
+    justify-content: center; //centrado
     gap: 15px;
     margin-top: 20px;
 }
 
-/* === GRID DE BOTONES === */
+//=== GRID DE BOTONES ===
 .grid-config {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -22,7 +22,7 @@
     margin-top: 25px;
 }
 
-/* === BOTONES DE OPCIONES === */
+//=== BOTONES DE OPCIONES ===
 .grid-config button {
     background: var(--mat-sys-on-primary-fixed-variant) !important;
     /* tu azul original */
@@ -44,7 +44,7 @@
     transform: translateY(-3px);
 }
 
-/* === BOTÓN ACTIVO (cuando estás en esa ruta) === */
+//=== BOTÓN ACTIVO (cuando estás en esa ruta) ===
 .grid-config button.active-link {
     background: #1e4ea8 !important;
     border: 2px solid #4caf50;
@@ -90,4 +90,15 @@ mat-card {
     background: var(--mat-sys-error);
     color: var(--mat-sys-on-error);
     font-weight: 600;
+}
+
+/* Responsive Móvil / Tablet */
+@media (max-width: 800px) {
+
+    mat-form-field,
+    mat-select,
+    input,
+    form {
+        width: 100% !important;
+    }
 }
