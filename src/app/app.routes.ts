@@ -125,5 +125,7 @@ export const routes: Routes = [
     },
 
     // --- REDIRECCIÓN ---
-    { path: '', redirectTo: 'login', pathMatch: 'full' }
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    // --- RUTA COMODÍN (cualquier URL desconocida que nos dirija a login) ---
+    { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
