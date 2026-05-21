@@ -4,16 +4,7 @@ body {
     margin: 0;
     padding: 0;
 }
-/*
-.login-wrapper {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    padding: 20px;
-}
-*/
+
 .login-wrapper {
     min-height: 100vh;
     width: 100%;
@@ -22,7 +13,7 @@ body {
     align-items: center;
     background: #1e3c72; // tu color
     box-sizing: border-box;
-    padding: 24px; // importante para móviles
+    padding: 24px; //para espciado en mobile
 }
 .login-box {
     margin: 0;
@@ -62,44 +53,24 @@ input:focus {
     border-color: #1e3c72;
     outline: none;
 }
-/*
-button {
-    width: 100%;
-    padding: 12px;
-    background: #1e3c72;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
 
-button:hover {
-    background: #16325c;
-}
-
-button:disabled {
-    background: #999;
-    cursor: not-allowed;
-}
-*/
 .error {
     color: red;
     margin-top: 15px;
 }
 
+//configuración escritorio
 .logo {
-    width: 90px;
+    max-width: 90px; //tamaño máximo en escritorio
 }
 
 .logo_invertido {
-    width: 90px;
+    max-width: 90px; //tamaño máximo en escritorio
     filter: invert(100%) grayscale(100%);
 }
 
 .flecha {
-    width: 80px; // Tamaño ajustable
+    width: 80px; //Tamaño ajustable
     height: 100px;
     fill: #073c70; //Color de la flecha
     transition: fill;
@@ -111,8 +82,7 @@ button:disabled {
 
 .form-item button.btn-login {
     width: 100%;
-    margin: 0;
-    //display: block;
+    margin: 0;    
     box-sizing: border-box;
 }
 
@@ -131,7 +101,6 @@ button:disabled {
     border: none;
     padding: 20px;
     font-size: 16px;
-    //border-radius: 8px;
     cursor: pointer;
     text-align: center;
     transition: 0.2s;
@@ -146,8 +115,7 @@ button:disabled {
 /* === BOTÓN ACTIVO (cuando estás en esa ruta) === */
 .grid-config button.active-link {
     background: #1e4ea8 !important;
-    border: 2px solid #4caf50;
-    /* borde verde original */
+    border: 2px solid #4caf50; /* borde verde original */
 }
 
 .btn-login {
@@ -159,4 +127,27 @@ button:disabled {
     /* igual que los inputs ajustados */
     box-sizing: border-box;
     margin-top: 10px;
+}
+
+//configuración móvil/tablet
+@media (max-width: 480px) {
+    .logo,
+    .logo_invertido {
+        max-width: 70px; //más pequeño en móvil
+    }
+    .flecha {
+        max-width: 60px; //Tamaño ajustable
+        height: 80px;
+    }
+}
+@media (max-width: 360px) {
+    .logo,
+    .logo_invertido {
+        max-width: 60px; //móviles muy pequeños
+    }
+    .flecha {
+        max-width: 60px; //Tamaño ajustable
+        height: 60px;
+
+    }
 }
