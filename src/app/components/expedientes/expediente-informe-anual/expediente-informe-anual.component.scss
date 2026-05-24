@@ -79,3 +79,13 @@ mat-card {
     border: 2px solid #4caf50;
     /* borde verde original */
 }
+
+/* Responsive Móvil / Tablet */
+@media (max-width: 800px) {
+    mat-form-field,
+    mat-select,
+    input,
+    form {
+        width: 100% !important;
+    }
+}

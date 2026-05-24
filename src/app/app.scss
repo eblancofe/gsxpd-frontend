@@ -1,3 +1,4 @@
+//Configuración general
 .top-menu {
     background: #1e1e1e;
     padding: 12px;
@@ -23,13 +24,6 @@ body {
     margin-top: 0px;
 }
 
-@media (max-width: 800px) {
-    .contenido {
-        //margin-top: 150px;
-        margin-top: calc(var(--menu-mobile-height, 260px));
-    }
-}
-
 html,
 body,
 app-root,
@@ -41,4 +35,11 @@ app-root,
 .contenido.no-padding {
     padding-top: 0 !important;
     margin-top: 0 !important;
+}
+
+//Responsive Móvil/Tablet
+@media (max-width: 800px) {
+    .contenido {
+        margin-top: calc(var(--menu-mobile-height, 260px));
+    }
 }

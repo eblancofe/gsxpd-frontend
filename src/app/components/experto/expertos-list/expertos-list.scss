@@ -1,45 +1,4 @@
-/*
-.tabla-cuadricula {
-    width: 50%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 15px;
-    border: 2px solid #444;
-    //borde exterior
-}
-
-.tabla-cuadricula th,
-.tabla-cuadricula td {
-    border: 1px solid #999;
-    //líneas internas
-    padding: 10px;
-}
-
-.tabla-cuadricula th {
-    background: #e0e0e0;
-    font-weight: bold;
-    text-align: center;
-}
-
-.tabla-cuadricula thead th {
-    //font-weight: bold;
-    //text-align: center;
-    background-color: gray; //gris suave
-}
-
-.tabla-cuadricula tr:hover {
-    background: #f5f5f5;
-}
-
-.col-acciones {
-    width: 160px;
-    text-align: center;
-}
-
-.acciones {
-    text-align: center;
-}
-*/
+//Configuración general
 $color-primary : --mat-sys-on-primary-fixed-variant;
 $color-second: rgb(46, 46, 46);
 $color-warn: #991c1c;
