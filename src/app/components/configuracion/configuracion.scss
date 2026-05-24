@@ -122,7 +122,6 @@ mat-card {
         align-items: flex-start;
         gap: 10px;
     }
-
     .titulo-configuracion {
         font-size: 23px;
         font-weight: 600;
@@ -136,16 +135,13 @@ mat-card {
             text-overflow: unset !important;
             word-break: break-word;
     }
-
     /* ESPACIADOR */
     .spacer {
         flex: 1;
-    }
-    
+    }    
     .info-card {
         margin-top: 130px;
     }
-
     .opciones-card {
         margin-top: 40px;
     }

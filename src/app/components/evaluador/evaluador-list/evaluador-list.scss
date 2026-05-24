@@ -1,109 +1,7 @@
-/*
-.tabla-evaluador {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 15px;
-}
-
-.tabla-evaluador th {
-    background: #333;
-    color: white;
-    padding: 10px;
-    text-align: left;
-}
-
-.tabla-evaluador td {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-}
-
-.tabla-evaluador tr:hover {
-    background: #f5f5f5;
-}
-
-.col-acciones {
-    width: 160px;
-    text-align: center;
-}
-
-.acciones {
-    text-align: center;
-}
-
-.btn-edit,
-.btn-delete {
-    padding: 5px 10px;
-    margin: 0 3px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.btn-edit {
-    background: #007bff;
-    color: white;
-}
-
-.btn-delete {
-    background: #dc3545;
-    color: white;
-}
-
-.btn-edit:hover {
-    background: #0056b3;
-}
-
-.btn-delete:hover {
-    background: #a71d2a;
-}
-*/
-/*
-.tabla-cuadricula {
-    width: 50%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 15px;
-    border: 2px solid #444;
-    //borde exterior
-}
-
-.tabla-cuadricula th,
-.tabla-cuadricula td {
-    border: 1px solid #999;
-    //líneas internas
-    padding: 10px;
-}
-
-.tabla-cuadricula th {
-    background: #e0e0e0;
-    font-weight: bold;
-    text-align: center;
-}
-
-.tabla-cuadricula thead th {
-    //font-weight: bold;
-    //text-align: center;
-    background-color: gray; //gris suave
-}
-
-.tabla-cuadricula tr:hover {
-    background: #f5f5f5;
-}
-
-.col-acciones {
-    width: 160px;
-    text-align: center;
-}
-
-.acciones {
-    text-align: center;
-}
-*/
+//Configuración general
 $color-primary : --mat-sys-on-primary-fixed-variant;
 $color-second: rgb(46, 46, 46);
 $color-warn: #991c1c;
-;
 
 .buscador {
     width: 80%;
@@ -148,13 +46,6 @@ mat-card {
     margin-top: 5%;
 }
 
-@media (max-width: 600px) {
-    app-menu .left-section button,
-    app-menu .right-section button {
-        width: 100%;
-    }
-}
-
 .paginacion {
     display: flex;
     justify-content: left;
@@ -173,4 +64,12 @@ mat-card {
 .pagina-info {
     font-weight: 500;
     color: var(--mat-sys-on-primary-fixed-variant);
+}
+
+//Reponsive Móvil/Tablet
+@media (max-width: 600px) {
+    app-menu .left-section button,
+    app-menu .right-section button {
+        width: 100%;
+    }
 }

@@ -1,3 +1,4 @@
+//Configuración general
 /* === CONTENEDOR PRINCIPAL === */
 .panel-container {
     max-width: 600px;
@@ -115,7 +116,7 @@ mat-card {
     margin-top: 5%;
 }
 
-/* Responsive Móvil */
+//Configuración Responsive Móvil/Tablet
 @media (max-width: 800px) {
     .toolbar {
         flex-direction: column;
@@ -144,5 +145,3 @@ mat-card {
         margin-top: 40px;
     }
 }
-
-

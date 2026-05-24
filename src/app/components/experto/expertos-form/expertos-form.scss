@@ -1,3 +1,4 @@
+//Configuración general
 .form-vertical {
     display: flex;
     flex-direction: column;
@@ -9,7 +10,6 @@
 .acciones {
     display: flex;
     justify-content: center;
-    /* o center si lo prefieres */
     gap: 15px;
     margin-top: 20px;
 }
