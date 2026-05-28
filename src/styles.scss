@@ -44,6 +44,10 @@ body {
   padding: 0;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 @media print {
   /* Ocultar toolbar Material */
   mat-toolbar,
