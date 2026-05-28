@@ -10,7 +10,7 @@
                     aplicaciones Web
     Proyecto:       TFM - Sistema de Gestión de Expedientes Digitales (GSXPD)
     Fecha creación: 07/03/2026
-    Última modif.:  10/04/2026
+    Última modif.:  28/05/2026
 
     Detalles:
       - Renderiza dinámicamente los elementos del menú mediante directivas @for y @if.
@@ -24,10 +24,10 @@
 <!-- Componente contenedor de encabezado de Menú navegación -->
 <mat-toolbar color="primary" class="toolbar mat-elevation-z2">
     <div class="logo-container">
-        <img src="logo_GSXPD.svg" alt="Logo" class="logo"><!-- Logotipo de aplicación "GSXPD" -->
+        <img src="logo_GSXPD.svg" alt="Logotipo de GSXPD" class="logo" aria-label="Ir a la página principal"
+        style="cursor: pointer;" routerLink="/panel"><!-- Logotipo de aplicación "GSXPD" -->
         <span class="app-name-mobile">GSXPD</span><!-- solo display en responsive móvil/tablet -->
-    </div>
-    
+    </div>    
     <!-- Navegación zona izquierda -->
     <div class="left-section">
         @if (loggedIn) {
@@ -55,12 +55,6 @@
                 <mat-icon>account_circle</mat-icon>
                 {{ usuario?.username }} ({{ usuario?.role }})
             </span>
-            <!--
-            <button mat-raised-button color="warn" (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                Cerrar sesión
-            </button>
-            -->
             <!-- Botón Cerrar Sesión -->
             <button mat-raised-button color="warn" (click)="cerrarSesion()">
                 <mat-icon>logout</mat-icon>
@@ -68,5 +62,4 @@
             </button>            
         }
     </div>
-
 </mat-toolbar><!-- Fin de Componente contenedor de encabezado de Menú navegación -->
